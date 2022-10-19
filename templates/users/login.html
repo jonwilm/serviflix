@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+  <!-- WRAPPER -->
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-center"><strong>INICIAR SESIÓN</strong></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+        <div class="content-form-login">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-2">
+              <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+              {{ form.email }}
+            </div>
+            <div class="mb-0">
+              <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
+              {{ form.password }}
+            </div>
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger mt-3 mb-0" role="alert">
+                  {{ error|escape }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <div class="d-grid">
+              <button id="submit" type="submit" class="btn btn-success mt-3">ENTRAR</button>
+              <a class="btn btn-primary mt-3" href="{% url 'users_app:user-register' %}">REGISTRATE</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END WRAPPER -->
+{% endblock content %}
