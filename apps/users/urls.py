@@ -23,6 +23,11 @@ urlpatterns = [
         name='user-register',
     ),
     path(
+        'change-password',
+        views.ChangePasswordUser.as_view(),
+        name='user-change-password',
+    ),
+    path(
         'logout',
         views.LogoutView.as_view(),
         name='user-logout',

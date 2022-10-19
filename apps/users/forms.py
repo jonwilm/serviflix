@@ -131,7 +131,7 @@ class RegisterForm(forms.Form):
         )
     )
     repassword = forms.CharField(
-        label='Contraseña',
+        label='Confirme contraseña',
         required=True,
         widget=forms.PasswordInput(
             attrs={
@@ -165,4 +165,3 @@ class RegisterForm(forms.Form):
             password=pw,
             defaults={}
         )
-    
