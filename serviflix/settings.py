@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'import_export',
     # APPS
     'apps.users',
+    'apps.services',
+    'apps.plans',
 ]
 
 MIDDLEWARE = [

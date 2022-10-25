@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Registro{% endblock title %}
+
+
+{% block css %}
+  <style>
+    .form-control:disabled,
+    .form-select:disabled {
+      border: none;
+      background-color: initial;
+      color: grey;
+    }
+  </style>
+{% endblock css %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-center"><strong>PERFIL</strong></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3">
+        <div class="">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-2">
+              <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+              {{ form.email }}
+            </div>
+            <div class="mb-2">
+              <label for="{{ form.first_name.id_for_label }}" class="form-label">{{ form.first_name.label }}</label>
+              {{ form.first_name }}
+            </div>
+            <div class="mb-2">
+              <label for="{{ form.last_name.id_for_label }}" class="form-label">{{ form.last_name.label }}</label>
+              {{ form.last_name }}
+            </div>
+            <div class="mb-2">
+              <label for="" class="form-label">Documento de identidad</label>
+              <div class="input-group">
+                {{ form.type_doc }}
+                {{ form.n_doc }}
+              </div>
+            </div>
+            <div class="mb-2">
+              <label for="{{ form.address.id_for_label }}" class="form-label">{{ form.address.label }}</label>
+              {{ form.address }}
+            </div>
+            <div class="mb-2">
+              <label for="{{ form.phone.id_for_label }}" class="form-label">{{ form.phone.label }}</label>
+              {{ form.phone }}
+            </div>
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="alert alert-danger mt-3 mb-0" role="alert">
+                  {{ error|escape }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <div class="d-grid">
+              <div class="row">
+                <a id="mod-datos" class="btn btn-primary mt-3">MODIFICAR DATOS</a>
+                <div class="col-sm-6 d-grid">
+                  <a id="cancel-mod-datos" class="btn btn-secondary mt-3 d-none">CANCELAR</a>
+                </div>
+                <div class="col-sm-6 d-grid">
+                  <button id="submit" type="submit" class="btn btn-primary mt-3 d-none">GUARDAR</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+
+{% block js %}
+  <script>
+    $('#mod-datos').on('click', () => {
+      $('input, select, textarea').removeAttr('disabled')
+      $('#mod-datos').addClass('d-none')
+      $('#submit').removeClass('d-none')
+      $('#cancel-mod-datos').removeClass('d-none')
+    })
+    $('#cancel-mod-datos').on('click', () => {
+      $('input, select, textarea').attr('disabled', 'disabled')
+      $('#mod-datos').removeClass('d-none')
+      $('#submit').addClass('d-none')
+      $('#cancel-mod-datos').addClass('d-none')
+    })
+  </script>
+{% endblock js %}
+  

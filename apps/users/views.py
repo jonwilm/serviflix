@@ -3,24 +3,20 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.views.generic import View, TemplateView
-from django.views.generic.edit import FormView
+from django.views.generic import View
+from django.views.generic.edit import FormView, UpdateView
 from django.forms import *
 from django.contrib.auth.forms import PasswordChangeForm
 
 from apps.users.models import User
 
-from .forms import LoginForm, RegisterForm
-
-
-class HomeView(TemplateView):
-    template_name = 'home.html'
+from .forms import LoginForm, RegisterForm, ProfileForm
 
 
 class LoginUser(FormView):
     template_name = 'users/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('users_app:home')
+    success_url = reverse_lazy('home_app:home')
 
     def form_valid(self, form):
         user = authenticate(
@@ -39,6 +35,23 @@ class RegisterUser(FormView):
     def form_valid(self, form):
         form.save()
         return super(RegisterUser, self).form_valid(form)
+
+
+class ProfileUser(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = ProfileForm
+    template_name = "users/profile.html"
+    success_message = "Datos Actualizados con exito"
+
+    # def get_dispatch(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        return reverse('users_app:user-profile')
 
 
 class ChangePasswordUser(LoginRequiredMixin, FormView):

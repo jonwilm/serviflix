@@ -8,5 +8,12 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    re_path('', include('apps.users.urls')),
+    path('', include('apps.home.urls')),
+    path('', include('apps.users.urls')),
+    path('', include('apps.services.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+admin.site.site_header = 'SERVIFLIX'
+admin.site.index_title = 'Panel de Administración'
+admin.site.site_title = 'Serviflix'

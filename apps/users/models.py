@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     RNC = 'R'
 
     TYPE_DOC_CHOICES = [
-        (DNI, 'Cedula'),
+        (DNI, 'DNI'),
         (PASSPORT, 'Pasaporte'),
         (RNC, 'RNC'),
     ]
@@ -34,27 +34,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         (CLIENT, 'Cliente'),
     ]
 
-    first_name = models.CharField(
-        'Nombres', max_length=100, blank=False, null=False)
-    last_name = models.CharField(
-        'Apellidos', max_length=100, blank=False, null=False)
-    email = models.EmailField(
-        'Correo electronico', unique=True, blank=False, null=False)
-    type_doc = models.CharField(
-        'Tipo de Documento', max_length=1, choices=TYPE_DOC_CHOICES, default='D', blank=False, null=False)
-    n_doc = models.CharField(
-        'Numero de Documento', max_length=100, blank=False, null=False)
-    address = models.TextField(
-        'Direccion', blank=False, null=False)
-    phone = models.CharField(
-        'Telefono', max_length=100, blank=False, null=False)
-    type_user = models.CharField(
-        'Tipo de Usuario', max_length=1, choices=TYPE_USER, default='3', blank=False, null=False)
+    first_name = models.CharField('Nombres', max_length=100, blank=False, null=False)
+    last_name = models.CharField('Apellidos', max_length=100, blank=False, null=False)
+    email = models.EmailField('Correo electronico', unique=True, blank=False, null=False)
+    type_doc = models.CharField('Tipo de Documento', max_length=1, choices=TYPE_DOC_CHOICES, default='D', blank=False, null=False)
+    n_doc = models.CharField('Numero de Documento', max_length=100, blank=False, null=False)
+    address = models.TextField('Direccion', blank=False, null=False)
+    phone = models.CharField('Telefono', max_length=100, blank=False, null=False)
+    type_user = models.CharField('Tipo de Usuario', max_length=1, choices=TYPE_USER, default='3', blank=False, null=False)
     #
-    is_staff = models.BooleanField(
-        'Staff', default=False, help_text='Indica que el usuario pertenece al staff de SERVIFLIX')
-    is_active = models.BooleanField(
-        'Usuario Activo', default=True, help_text='Indica que el usuario esta activo en la plataforma')
+    is_staff = models.BooleanField('Staff', default=False, help_text='Indica que el usuario pertenece al staff de SERVIFLIX')
+    is_active = models.BooleanField('Usuario Activo', default=True, help_text='Indica que el usuario esta activo en la plataforma')
+    date_create = models.DateTimeField('Fecha de registro', auto_now_add=True)
 
     USERNAME_FIELD = 'email'
 

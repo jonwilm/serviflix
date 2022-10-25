@@ -24,6 +24,7 @@ class UserAdmin(UserAdmin):
                 'is_superuser'
             ),
         }),
+
         (('Fechas Importantes'), {
             'fields': (
                 'last_login',
@@ -51,7 +52,7 @@ class UserAdmin(UserAdmin):
     list_display = ('email', 'first_name', 'last_name')
     search_fields = ('first_name', 'last_name', 'email',)
     list_filter = ('type_user', 'is_staff', 'is_superuser')
-    ordering = ('email', )
+    ordering = ('email', 'first_name', 'last_name', )
 
 
 admin.site.register(User, UserAdmin)

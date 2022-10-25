@@ -8,14 +8,14 @@ app_name = "users_app"
 
 urlpatterns = [
     path(
-        '',
-        views.HomeView.as_view(),
-        name='home',
-    ),
-    path(
         'login',
         views.LoginUser.as_view(),
         name='user-login',
+    ),
+    path(
+        'logout',
+        views.LogoutView.as_view(),
+        name='user-logout',
     ),
     path(
         'register',
@@ -23,13 +23,13 @@ urlpatterns = [
         name='user-register',
     ),
     path(
-        'change-password',
-        views.ChangePasswordUser.as_view(),
-        name='user-change-password',
+        'user/profile',
+        views.ProfileUser.as_view(),
+        name='user-profile',
     ),
     path(
-        'logout',
-        views.LogoutView.as_view(),
-        name='user-logout',
+        'user/change-password',
+        views.ChangePasswordUser.as_view(),
+        name='user-change-password',
     ),
 ]

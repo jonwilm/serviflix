@@ -165,3 +165,56 @@ class RegisterForm(forms.Form):
             password=pw,
             defaults={}
         )
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'type_doc', 'n_doc', 'address', 'phone']
+        widgets = {
+            'first_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                    'placeholder': 'Nombres',
+                }
+            ),
+            'last_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                    'placeholder': 'Apellidos',
+                }
+            ),
+            'type_doc': forms.Select(
+                choices=doc_type,
+                attrs={
+                    'class': 'form-select',
+                    'disabled': 'disabled',
+                    'style': 'width: 30%;',
+                }
+            ),
+            'n_doc': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                    'style': 'width: 70%;',
+                }
+            ),
+            'address': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                    'placeholder': 'Dirección',
+                    'rows': '2',
+                    'style': 'resize: none;'
+                }
+            ),
+            'phone': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled',
+                    'placeholder': 'Teléfono',
+                }
+            ),
+        }
