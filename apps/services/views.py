@@ -17,10 +17,10 @@ class RegisterService(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = RegisterServiceForm(request.POST, user=self.request.user)
-        print(request.POST)
+        user = self.request.user
         if form.is_valid():
             Service.objects.create(
-                # user=user,
+                user=user,
                 category=self.request.POST['category'],
                 title=self.request.POST['title'],
                 company=self.request.POST['company'],
@@ -34,5 +34,4 @@ class RegisterService(LoginRequiredMixin, CreateView):
                 whatsapp=self.request.POST['whatsapp'],
                 office_hours=self.request.POST['office_hours'],
             )
-        # return super(RegisterService, self).form_valid(form)
         return HttpResponseRedirect(reverse('users_app:user-profile'))
