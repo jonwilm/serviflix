@@ -31,18 +31,28 @@ def make_not_published(modeladmin, request, queryset):
 class ServiceAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('state', 'user', 'category', 'title', 'company', 'plan', 'cuota',)}),
-        (('CONTENIDO'), {
+        (('INFORMACION'), {
             'fields': (
                 'image',
                 'description',
             )
         }),
-        (('UBICACIÓN Y CONTACTO'), {
+        (('UBICACIÓN'), {
             'fields': (
                 'address',
+            )
+        }),
+        (('CONTACTO'), {
+            'fields': (
+                'email',
                 'phone1',
                 'phone2',
                 'whatsapp',
+                'web',
+            )
+        }),
+        (('HORARIO DE ATENCIÓN'), {
+            'fields': (
                 'office_hours',
             )
         }),

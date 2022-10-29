@@ -50,73 +50,10 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(
         label='Correo Electronico',
         required=True,
-        widget=forms.TextInput(
+        widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
                 'placeholder': 'Correo Electronico',
-            }
-        )
-    )
-    first_name = forms.CharField(
-        label='Nombres',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Nombres',
-            }
-        )
-    )
-    last_name = forms.CharField(
-        label='Apellidos',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Apellidos',
-            }
-        )
-    )
-    type_doc = forms.CharField(
-        label='Tipo de documento',
-        required=True,
-        widget=forms.Select(
-            choices=doc_type,
-            attrs={
-                'class': 'form-select',
-                'style': 'width: 30%;',
-            }
-        )
-    )
-    n_doc = forms.CharField(
-        label='Número de documento',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'style': 'width: 70%;',
-            }
-        )
-    )
-    address = forms.CharField(
-        label='Dirección',
-        required=True,
-        widget=forms.Textarea(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Dirección',
-                'rows': '2',
-                'style': 'resize: none;'
-            }
-        )
-    )
-    phone = forms.CharField(
-        label='Teléfono',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Teléfono',
             }
         )
     )
@@ -156,56 +93,47 @@ class RegisterForm(forms.Form):
         pw = make_password(data['password'])
         User.objects.get_or_create(
             email=data['email'],
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            type_doc=data['type_doc'],
-            n_doc=data['n_doc'],
-            address=data['address'],
-            phone=data['phone'],
             password=pw,
             defaults={}
         )
 
 
-class ProfileForm(forms.ModelForm):
+class UpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'type_doc', 'n_doc', 'address', 'phone']
+        fields = ['email', 'first_name', 'last_name', 'type_doc', 'n_doc', 'address', 'phone']
         widgets = {
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
             'first_name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'disabled': 'disabled',
-                    'placeholder': 'Nombres',
                 }
             ),
             'last_name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'disabled': 'disabled',
-                    'placeholder': 'Apellidos',
                 }
             ),
             'type_doc': forms.Select(
                 choices=doc_type,
                 attrs={
                     'class': 'form-select',
-                    'disabled': 'disabled',
                     'style': 'width: 30%;',
                 }
             ),
             'n_doc': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'disabled': 'disabled',
                     'style': 'width: 70%;',
                 }
             ),
             'address': forms.Textarea(
                 attrs={
                     'class': 'form-control',
-                    'disabled': 'disabled',
-                    'placeholder': 'Dirección',
                     'rows': '2',
                     'style': 'resize: none;'
                 }
@@ -213,8 +141,6 @@ class ProfileForm(forms.ModelForm):
             'phone': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'disabled': 'disabled',
-                    'placeholder': 'Teléfono',
                 }
             ),
         }

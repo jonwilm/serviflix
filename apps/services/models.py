@@ -1,3 +1,5 @@
+from distutils.command.upload import upload
+import email
 from django.db import models
 from django.utils.text import slugify
 
@@ -30,11 +32,17 @@ class Service(models.Model):
     image = models.ImageField('Imagen', upload_to='media/services', blank=True, null=True, help_text='Imagen de Portada')
     description = models.TextField('Descripción', blank=True, null=True, help_text='Descripcion de servicios ofrecidos')
 
-    # Ubicación y Contacto
-    address = models.TextField('Dirección', blank=True, null=True)
+    # Ubicación 
+    address = models.CharField('Dirección', max_length=255, blank=True, null=True)
+    
+    # Contacto
+    email = models.EmailField('Email', blank=True, null=True)
     phone1 = models.CharField('Telefono 1', max_length=12, blank=True, null=True, help_text=541234567890)
     phone2 = models.CharField('Telefono 2', max_length=12, blank=True, null=True, help_text=541234567890)
     whatsapp = models.CharField('Whatsapp', max_length=12, blank=True, null=True, help_text=541234567890)
+    web = models.URLField('Web', blank=True, null=True)
+
+    # Horario de atención
     office_hours = models.TextField('Horario de Atención', blank=True, null=True)
 
     # Fechas
@@ -66,14 +74,14 @@ class SocialNetwork(models.Model):
 
 
 PAYMETHODS = [
-    ('1', 'Efectivo'),
-    ('2', 'Visa'),
-    ('3', 'Mastercard'),
-    ('4', 'Mercado Pago'),
+    ('Efectivo', 'Efectivo'),
+    ('Visa', 'Visa'),
+    ('Mastercard', 'Mastercard'),
+    ('Mercado Pago', 'Mercado Pago'),
 ]
 
 class PaymentMethods(models.Model):
-    paymethod = models.CharField('Metodo de Pago', max_length=2, choices=PAYMETHODS)
+    paymethod = models.CharField('Metodo de Pago', max_length=50)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Servicio')
 
     class Meta:

@@ -6,14 +6,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>{% block title %}{% endblock title %} - Serviflix</title>
+  <title>{% block title %}{% endblock title %} | Serviflix</title>
   <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
   
   {% block css %}{% endblock css %}
 
-  <nav class="navbar navbar-expand-lg bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
       <a class="navbar-brand" href="#">Serviflix</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,10 +22,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home_app:home' %}">Inicio</a>
+            <a class="nav-link px-3" href="{% url 'home_app:home' %}">Inicio</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle btn btn-primary text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link px-3 dropdown-toggle btn btn-primary text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {% if user.is_authenticated %}
               <small class="small">
                 {{ request.user.first_name }}
@@ -36,11 +36,10 @@
             </a>
             <ul class="dropdown-menu text-center" style="left: initial; right: 0; min-width: initial;">
               {% if user.is_authenticated %}
-              <li><a class="dropdown-item" href="{% url 'users_app:user-profile' %}">Perfil</a></li>
-              <li><a class="dropdown-item" href="{% url 'users_app:user-change-password' %}">Cambiar contraseña</a></li>
+              <li><a class="dropdown-item" href="{% url 'users_app:user-dashboard' %}">Dashboard</a></li>
               <li><a class="dropdown-item" href="{% url 'users_app:user-logout' %}">Cerrar Sesión</a></li>
               {% else %}
-              <li><a class="dropdown-item" href="{% url 'users_app:user-login' %}">Acceder</a></li>
+              <li><a class="dropdown-item" href="{% url 'users_app:user-login' %}">Iniciar Sesión</a></li>
               <li><a class="dropdown-item" href="{% url 'users_app:user-register' %}">Registrarse</a></li>
               {% endif%}
             </ul>
@@ -51,6 +50,12 @@
   </nav>
   
   {% block content %}{% endblock content %}
+
+  <footer class="py-3 bg-dark text-light">
+    <div class="container text-center">
+      <small>Serviflix &copy; 2022. Derechos Reservados</small>
+    </div>
+  </footer>
   
   <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

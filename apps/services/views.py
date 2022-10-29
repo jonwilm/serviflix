@@ -2,36 +2,51 @@
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, UpdateView
 
-from apps.users.models import User
-from .models import Service
+from .models import PaymentMethods, Service, SocialNetwork
 from .forms import RegisterServiceForm
+
+
+class ListService(ListView):
+    model = Service
+    template_name = 'services/list.html'
+
+    def get_context_data(self, **kwargs):
+        services_all = super().get_context_data(**kwargs)
+        services_pub = Service.objects.filter(state=True)
+        context = {
+            'services_all': services_all['object_list'],
+            'services_pub': services_pub,
+        }
+        return context
 
 
 class RegisterService(LoginRequiredMixin, CreateView):
     model = Service
     form_class = RegisterServiceForm
     template_name = 'services/register.html'
-    success_url = reverse_lazy('users_app:user-profile')
+    success_url = reverse_lazy('users_app:user-dashboard')
 
-    def post(self, request, *args, **kwargs):
-        form = RegisterServiceForm(request.POST, user=self.request.user)
-        user = self.request.user
-        if form.is_valid():
-            Service.objects.create(
-                user=user,
-                category=self.request.POST['category'],
-                title=self.request.POST['title'],
-                company=self.request.POST['company'],
-                plan=self.request.POST['plan'],
-                cuota=self.request.POST['cuota'],
-                image=self.request.POST['image'],
-                description=self.request.POST['description'],
-                address=self.request.POST['address'],
-                phone1=self.request.POST['phone1'],
-                phone2=self.request.POST['phone2'],
-                whatsapp=self.request.POST['whatsapp'],
-                office_hours=self.request.POST['office_hours'],
-            )
-        return HttpResponseRedirect(reverse('users_app:user-profile'))
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class DetailService(DetailView):
+    model = Service
+    template_name = 'services/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        service = self.get_object()
+        redes = SocialNetwork.objects.filter(service=service.pk)
+        payMethods = PaymentMethods.objects.filter(service=service.pk)
+        context = {
+            'service': service,
+            'redes': redes,
+            'payMethods': payMethods,
+        }
+        return context
+    

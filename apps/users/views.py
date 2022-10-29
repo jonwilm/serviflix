@@ -1,22 +1,25 @@
 # Django
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
-from django.views.generic import View
-from django.views.generic.edit import FormView, UpdateView
+from django.views.generic import View, ListView, DetailView
+from django.views.generic.edit import FormView, UpdateView, DeleteView
 from django.forms import *
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db.models import Q
 
 from apps.users.models import User
+from apps.services.models import Service
 
-from .forms import LoginForm, RegisterForm, ProfileForm
+from .forms import LoginForm, RegisterForm, UpdateForm
 
 
 class LoginUser(FormView):
     template_name = 'users/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('home_app:home')
+    success_url = reverse_lazy('users_app:user-dashboard')
 
     def form_valid(self, form):
         user = authenticate(
@@ -37,21 +40,27 @@ class RegisterUser(FormView):
         return super(RegisterUser, self).form_valid(form)
 
 
-class ProfileUser(LoginRequiredMixin, UpdateView):
+class DashboardUser(LoginRequiredMixin, ListView):
     model = User
-    form_class = ProfileForm
-    template_name = "users/profile.html"
-    success_message = "Datos Actualizados con exito"
+    template_name = 'users/dashboard.html'
 
-    # def get_dispatch(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class UpdateUser(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UpdateForm
+    template_name = 'users/update.html'
+    success_message = 'Datos Actualizados con exito'
 
     def get_object(self, queryset=None):
+        print(Service.objects.filter(user=self.request.user))
         return self.request.user
 
     def get_success_url(self):
-        return reverse('users_app:user-profile')
+        return reverse('users_app:user-dashboard')
 
 
 class ChangePasswordUser(LoginRequiredMixin, FormView):
@@ -76,6 +85,24 @@ class ChangePasswordUser(LoginRequiredMixin, FormView):
         return HttpResponseRedirect(
             reverse(
                 'users_app:user-login'
+            )
+        )
+
+
+class DeleteUser(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = User
+    success_url = '/'
+
+    def test_func(self):
+        user = self.get_object()
+        if self.request.user == user:
+            return True
+        return False
+
+    def handle_no_permission(self):
+        return HttpResponseRedirect(
+            reverse(
+                'home_app:home'
             )
         )
 

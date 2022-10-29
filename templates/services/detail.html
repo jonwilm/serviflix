@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Registro{% endblock title %}
+
+{% block css %}
+<style>
+  .img-portada {
+    height: 50vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container-fluid img-portada" style="background-image: url({{service.image.url}});"></div>
+<div class="container">
+  <div class="row pt-3">
+    <div class="col-12">
+      <h1 class="text-center"><strong>{{ service.title }}</strong></h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-6 py-3">
+      <div class="p-3 shadow-lg">
+        <h5 class="mb-3"><strong>Información</strong></h5>
+        {% if service.company  %}
+        <p><strong>Empresa: </strong>{{ service.company }}</p>
+        {% endif %}
+        {% if service.description  %}
+        <p><strong>Descripción: </strong>{{ service.description }}</p>
+        {% endif %}
+      </div>
+      <div class="p-3 shadow-lg">
+        <h5 class="mb-3"><strong>Horario de Atención</strong></h5>
+        {% if service.office_hours  %}
+        <p>{{ service.office_hours|linebreaks }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 py-3">
+      <div class="p-3 shadow-lg">
+        <h5 class="mb-3"><strong>Redes Sociales</strong></h5>
+        {% for rrss in redes %}
+        <a href="{{ rrss.url }}" target="_blank" rel="noopener noreferrer">{{ rrss.name }}</a>
+        {% endfor %}
+      </div>
+      <div class="p-3 shadow-lg">
+        <h5 class="mb-3"><strong>Metodos de Pago</strong></h5>  
+        {% for pm in payMethods %}
+        <p class="mb-0">{{ pm.paymethod }}</p>
+        {% endfor %}
+      </div>
+      <div class="p-3 shadow-lg">
+        <h5 class="mb-3"><strong>Contacto</strong></h5>
+        {% if service.email  %}
+        <p><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
+        {% endif %}
+        {% if service.phone1  %}
+        <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone1 }}">{{ service.phone1 }}</a></p>
+        {% endif %}
+        {% if service.phone2  %}
+        <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
+        {% endif %}
+        {% if service.whatsapp  %}
+        <p><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
+        {% endif %}
+        {% if service.web  %}
+        <p><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock title %}
+
+
+{% block css %}{% endblock css %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center"><strong>ELIMINAR CUENTA</strong></h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 py-3 rounded shadow-lg">
+      <div class="content-form-login">
+        <form method="POST">
+          {% csrf_token %}
+          <p class="text-center text-danger">¿Está seguro que desea eliminar el usuario <br> "{{ object }}"?</p>
+          <div class="d-grid">
+            <button id="submit" type="submit" class="btn btn-danger mt-3">CONFIRMAR</button>
+            <a class="btn btn-secondary mt-3" href="{% url 'users_app:user-dashboard' %}">CANCELAR</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

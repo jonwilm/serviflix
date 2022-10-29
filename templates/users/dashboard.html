@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock title %}
+
+
+{% block css %}
+<style>
+  .form-control:disabled,
+  .form-select:disabled {
+    border: none;
+    background-color: initial;
+    color: grey;
+  }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-left"><strong>DASHBOARD</strong></h1>
+    </div>
+  </div>
+  <div class="row shadow-lg">
+    <div class="col-12 py-3">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+          <h5><strong>DATOS PERSONALES</strong></h5>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Opciones
+            </button>
+            <ul class="dropdown-menu text-center">
+              <li><a class="dropdown-item" href="{% url 'users_app:user-update' %}">Modificar datos</a></li>
+              <li><a class="dropdown-item" href="{% url 'users_app:user-change-password' %}">Cambiar contraseña</a></li>
+              <li><a class="dropdown-item" href="{% url 'users_app:user-delete' user.id %}">Eliminar cuenta</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="mb-2">
+        <p><strong>Email: </strong>{{ user.email|default_if_none:"" }}</p>
+      </div>
+      <div class="mb-2">
+        <p><strong>Nombre: </strong>{{ user.first_name|default_if_none:"" }} {{ user.last_name|default_if_none:"" }}</p>
+      </div>
+      <div class="mb-2">
+        <p><strong>Documento de identidad: </strong>{{ user.get_type_doc_display|default_if_none:"" }} {{ user.n_doc|default_if_none:"" }}</p>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="mb-2">
+        <p><strong>Dirección: </strong>{{ user.address|default_if_none:"" }}</p>
+      </div>
+      <div class="mb-2">
+        <p><strong>Teléfono: </strong>{{ user.phone|default_if_none:"" }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

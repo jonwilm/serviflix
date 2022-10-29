@@ -23,10 +23,19 @@ urlpatterns = [
         name='user-register',
     ),
     path(
-        'user/profile',
-        views.ProfileUser.as_view(),
-        name='user-profile',
+        'user/dashboard',
+        views.DashboardUser.as_view(),
+        name='user-dashboard',
     ),
+    path(
+        'user/update',
+        views.UpdateUser.as_view(),
+        name='user-update',
+    ),
+    path(
+        'user/<int:pk>/delete',
+        views.DeleteUser.as_view(),
+        name="user-delete"),
     path(
         'user/change-password',
         views.ChangePasswordUser.as_view(),

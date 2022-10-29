@@ -34,13 +34,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         (CLIENT, 'Cliente'),
     ]
 
-    first_name = models.CharField('Nombres', max_length=100, blank=False, null=False)
-    last_name = models.CharField('Apellidos', max_length=100, blank=False, null=False)
+    first_name = models.CharField('Nombres', max_length=100, blank=True, null=True)
+    last_name = models.CharField('Apellidos', max_length=100, blank=True, null=True)
     email = models.EmailField('Correo electronico', unique=True, blank=False, null=False)
-    type_doc = models.CharField('Tipo de Documento', max_length=1, choices=TYPE_DOC_CHOICES, default='D', blank=False, null=False)
-    n_doc = models.CharField('Numero de Documento', max_length=100, blank=False, null=False)
-    address = models.TextField('Direccion', blank=False, null=False)
-    phone = models.CharField('Telefono', max_length=100, blank=False, null=False)
+    type_doc = models.CharField('Tipo de Documento', max_length=1, choices=TYPE_DOC_CHOICES, blank=True, null=True)
+    n_doc = models.CharField('Numero de Documento', max_length=100, blank=True, null=True)
+    address = models.TextField('Direccion', blank=True, null=True)
+    phone = models.CharField('Telefono', max_length=100, blank=True, null=True)
     type_user = models.CharField('Tipo de Usuario', max_length=1, choices=TYPE_USER, default='3', blank=False, null=False)
     #
     is_staff = models.BooleanField('Staff', default=False, help_text='Indica que el usuario pertenece al staff de SERVIFLIX')
