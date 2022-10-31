@@ -101,9 +101,9 @@ package-lock.json
 
 
 # Migraciones
-# **/migrations/*
-# **/migrations/*
-# **/migrations/*
+**/migrations/*
+**/migrations/*
+**/migrations/*
 
 # confuguracion
 .vscode
