@@ -6,7 +6,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from .models import PaymentMethods, Service, SocialNetwork
-from .forms import RegisterServiceForm
+from .forms import RegisterServiceForm, UpdateServiceForm
 
 
 class ListService(ListView):
@@ -33,6 +33,18 @@ class RegisterService(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+
+class UpdateService(LoginRequiredMixin, UpdateView):
+    model = Service
+    form_class = UpdateServiceForm
+    template_name = 'services/update.html'
+    success_message = 'Datos Actualizados con exito'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        return reverse('users_app:user-dashboard')
 
 class DetailService(DetailView):
     model = Service

@@ -18,6 +18,11 @@ urlpatterns = [
         name='service-register',
     ),
     path(
+        'services/<int:pk>/edit',
+        views.UpdateService.as_view(),
+        name='service-edit',
+    ),
+    path(
         'services/<slug:slug>',
         views.DetailService.as_view(),
         name="service-detail"),

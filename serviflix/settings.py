@@ -27,11 +27,11 @@ DEBUG = True
 
 # Production
 # -------------------------------------
-# ALLOWED_HOSTS = ['serviflix.com.ar']
+ALLOWED_HOSTS = ['serviflix.com.ar']
 
 # Local
 # -------------------------------------
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -135,19 +135,19 @@ USE_TZ = True
 
 # Production
 # -------------------------------------
-# STATIC_ROOT = 'static/'
-# MEDIA_ROOT = 'media/'
-# SITE_URL = 'serviflix.com.ar'
-# MEDIA_URL = '/media/'
-# STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
+MEDIA_ROOT = 'media/'
+SITE_URL = 'serviflix.com.ar'
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 
 #Local
 # -------------------------------------
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

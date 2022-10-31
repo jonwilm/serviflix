@@ -58,7 +58,6 @@ class UpdateUser(LoginRequiredMixin, UpdateView):
     success_message = 'Datos Actualizados con exito'
 
     def get_object(self, queryset=None):
-        print(Service.objects.filter(user=self.request.user))
         return self.request.user
 
     def get_success_url(self):
