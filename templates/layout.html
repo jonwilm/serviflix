@@ -24,6 +24,9 @@
           <li class="nav-item">
             <a class="nav-link px-3" href="{% url 'home_app:home' %}">Inicio</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link px-3" href="{% url 'services_app:service-list' %}">Servicios</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link px-3 dropdown-toggle btn btn-primary text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {% if user.is_authenticated %}

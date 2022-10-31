@@ -34,42 +34,59 @@
         <p><strong>Descripción: </strong>{{ service.description }}</p>
         {% endif %}
       </div>
+      {% if service.plan|stringformat:"s" == "Premium" %}
       <div class="p-3 shadow-lg">
         <h5 class="mb-3"><strong>Horario de Atención</strong></h5>
         {% if service.office_hours  %}
         <p>{{ service.office_hours|linebreaks }}</p>
         {% endif %}
       </div>
+      {% endif %}
     </div>
     <div class="col-12 col-lg-6 py-3">
-      <div class="p-3 shadow-lg">
-        <h5 class="mb-3"><strong>Redes Sociales</strong></h5>
-        {% for rrss in redes %}
-        <a href="{{ rrss.url }}" target="_blank" rel="noopener noreferrer">{{ rrss.name }}</a>
-        {% endfor %}
-      </div>
+      
+      {% if service.plan|stringformat:"s" == "Premium" %}
+        {% if redes %}
+        <div class="p-3 shadow-lg">
+          <h5 class="mb-3"><strong>Redes Sociales</strong></h5>
+          {% for rrss in redes %}
+          <a href="{{ rrss.url }}" target="_blank" rel="noopener noreferrer">{{ rrss.name }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endif %}
+      
+      {% if service.plan|stringformat:"s" == "Premium" %}
+      {% if payMethods %}
       <div class="p-3 shadow-lg">
         <h5 class="mb-3"><strong>Metodos de Pago</strong></h5>  
         {% for pm in payMethods %}
         <p class="mb-0">{{ pm.paymethod }}</p>
         {% endfor %}
       </div>
+      {% endif %}
+      {% endif %}
+      
       <div class="p-3 shadow-lg">
         <h5 class="mb-3"><strong>Contacto</strong></h5>
-        {% if service.email  %}
-        <p><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
+        {% if service.plan|stringformat:"s" == "Premium" %}
+          {% if service.email  %}
+          <p><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
+          {% endif %}
         {% endif %}
         {% if service.phone1  %}
         <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone1 }}">{{ service.phone1 }}</a></p>
         {% endif %}
-        {% if service.phone2  %}
-        <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
-        {% endif %}
-        {% if service.whatsapp  %}
-        <p><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
-        {% endif %}
-        {% if service.web  %}
-        <p><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
+        {% if service.plan|stringformat:"s" == "Premium" %}
+          {% if service.phone2  %}
+          <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
+          {% endif %}
+          {% if service.whatsapp  %}
+          <p><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
+          {% endif %}
+          {% if service.web  %}
+          <p><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
+          {% endif %}
         {% endif %}
       </div>
     </div>

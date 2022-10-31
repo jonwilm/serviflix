@@ -65,7 +65,7 @@ class ServiceAdmin(admin.ModelAdmin):
     )
 
     inlines = (SocialNetworkAdmin, PaymentMethodsAdmin)
-    list_display = ('title', 'category', 'user', 'state',)
+    list_display = ('id', 'title', 'category', 'user', 'state',)
     search_fields = ('category', 'title',)
     list_filter = ('state', 'category',)
     ordering = ('date_create',)
