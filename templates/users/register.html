@@ -3,55 +3,130 @@
 
 {% block title %}Registro de Usuarios{% endblock title %}
 
+{% block css %}{% endblock css %}
+
+{% block navbar %}
+{% include 'partials/navbar-dark-fixed.html' %}
+{% endblock navbar %}
+
 {% block content %}
-  <!-- WRAPPER -->
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-12">
-        <h1 class="text-center"><strong>REGISTRO DE USUARIOS</strong></h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 py-3 rounded shadow-lg"
-        <div class="">
-          <form method="POST">
-            {% csrf_token %}
-            <div class="mb-2">
-              <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
-              {{ form.email }}
-            </div>
-            <div class="mb-2">
-              <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
-              {{ form.password }}
-              <ul class="mt-2 mb-0">
-                <li class="small">Su contraseña no puede ser similar a otros componentes de su información personal.</li>
-                <li class="small">Su contraseña debe contener por lo menos 8 caracteres.</li>
-                <li class="small">Su contraseña no puede ser una contraseña usada muy comúnmente.</li>
-                <li class="small">Su contraseña no puede estar formada exclusivamente por números.</li>
-              </ul>
-            </div>
-            <div class="mb-2">
-              <label for="repassword" class="form-label">Confirmar Contraseña</label>
-              {{ form.repassword}}
-              <ul class="mt-2 mb-0">
-                <li class="small">Introduzca la misma contraseña nuevamente, para poder verificar la misma.</li>
-              </ul>
-            </div>
-            {% if form.non_field_errors %}
+<section class="position-relative">
+  <div class="container pt-11 pt-lg-14 pb-9 pb-lg-11 position-relative z-index-1">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-6 col-sm-8 z-index-2">
+        <h2 class="mb-1 display-6">
+          Registro
+        </h2>
+        <p class="mb-4 text-">
+          Para comenzar, regístrese con los detalles...
+        </p>
+        <div class="position-relative">
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              {% if form.non_field_errors %}
               {% for error in form.non_field_errors %}
-                <div class="alert alert-danger mt-3 mb-0" role="alert">
-                  {{ error|escape }}
-                </div>
+              <div class="alert alert-danger my-3 py-2" role="alert">
+                {{ error|escape }}
+              </div>
               {% endfor %}
-            {% endif %}
-            <div class="d-grid">
-              <button id="submit" type="submit" class="btn btn-success mt-3">REGISTRAR</button>
-              <a class="btn btn-primary mt-3" href="{% url 'users_app:user-login' %}">INICIAR SESIÓN</a>
-            </div>
-          </form>
+              {% endif %}
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-envelope text-primary"></i>
+                </span>
+                {{ form.email }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-user text-primary"></i>
+                </span>
+                {{ form.first_name }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-user text-primary"></i>
+                </span>
+                {{ form.last_name }}
+              </div>
+              
+              <div class="input-icon-group input-group mb-3 d-flex">
+                {{ form.type_doc }}
+                <span class="input-icon">
+                  <i class="bx bxs-id-card text-primary"></i>
+                </span>
+                {{ form.n_doc }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-map text-primary"></i>
+                </span>
+                {{ form.province }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-map text-primary"></i>
+                </span>
+                {{ form.location }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-phone text-primary"></i>
+                </span>
+                {{ form.phone }}
+              </div>
+              
+              <div class="input-icon-group mb-1">
+                <span class="input-icon">
+                  <i class="bx bxs-lock-open text-primary"></i>
+                </span>
+                {{ form.password }}
+              </div>
+              <ul class="mb-3">
+                <li class="ultrasmall text-muted">Su contraseña no puede ser similar a otros componentes de su información personal.</li>
+                <li class="ultrasmall text-muted">Su contraseña debe contener por lo menos 8 caracteres.</li>
+                <li class="ultrasmall text-muted">Su contraseña no puede ser una contraseña usada muy comúnmente.</li>
+                <li class="ultrasmall text-muted">Su contraseña no puede estar formada exclusivamente por números.</li>
+              </ul>
+              
+              <div class="input-icon-group mb-1">
+                <span class="input-icon">
+                  <i class="bx bxs-lock-open text-primary"></i>
+                </span>
+                {{ form.repassword }}
+              </div>
+              <ul class="mb-3">
+                <li class="ultrasmall text-muted">Introduzca la misma contraseña nuevamente, para poder verificar la misma.</li>
+              </ul>
+              
+              <div class="mb-3 d-flex justify-content-between">
+                <div class="form-check">
+                  <input class="form-check-input" required type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label small text-muted" for="flexCheckDefault">
+                    Acepto los <a href="#!" class="fw-semibold link-decoration">Terminos y condiciones</a>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="d-grid">
+                <button class="btn btn-secondary" type="submit">
+                  Registrar
+                </button>
+              </div>
+            </form>
+            
+            <p class="pt-3 small text-muted">
+              ¿Ya tienes una cuenta? <a href="{% url 'users_app:user-login' %}" class="ms-2 text-dark fw-semibold link-decoration">Iniciar Sesión</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- END WRAPPER -->
+</section>
 {% endblock content %}

@@ -20,19 +20,24 @@ class PaymentMethodsAdmin(admin.TabularInline):
     extra = 0
 
 
-@admin.action(description='Marcar seleccionados como PUBLICADOS')
-def make_published(modeladmin, request, queryset):
-    queryset.update(state=True)
+@admin.action(description='Marcar seleccionados como ACTIVOS')
+def make_active(modeladmin, request, queryset):
+    queryset.update(status='Activo')
 
-@admin.action(description='Marcar seleccionados como NO PUBLICADOS')
-def make_not_published(modeladmin, request, queryset):
-    queryset.update(state=False)
+@admin.action(description='Marcar seleccionados como INACTIVOS')
+def make_inactive(modeladmin, request, queryset):
+    queryset.update(status='Inactivo')
+
+@admin.action(description='Marcar seleccionados como PAUSADOS')
+def make_paused(modeladmin, request, queryset):
+    queryset.update(status='Pausado')
 
 class ServiceAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ('state', 'user', 'category', 'title', 'company', 'plan', 'cuota',)}),
+        (None, {'fields': ('status', 'user', 'category', 'title', 'company', 'plan', 'cuota',)}),
         (('INFORMACION'), {
             'fields': (
+                'logo',
                 'image',
                 'description',
             )
@@ -65,12 +70,13 @@ class ServiceAdmin(admin.ModelAdmin):
     )
 
     inlines = (SocialNetworkAdmin, PaymentMethodsAdmin)
-    list_display = ('id', 'title', 'category', 'user', 'state',)
+    list_display = ('id', 'title', 'category', 'user', 'status',)
     search_fields = ('category', 'title',)
-    list_filter = ('state', 'category',)
+    list_filter = ('status', 'category',)
     ordering = ('date_create',)
     readonly_fields = ('date_mod', 'date_create',)
-    actions = [make_published, make_not_published]
+    actions = [make_active, make_inactive, make_paused]
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Service, ServiceAdmin)
+admin.site.register(SocialNetwork)

@@ -18,26 +18,26 @@ urlpatterns = [
         name='user-logout',
     ),
     path(
-        'register',
+        'registro',
         views.RegisterUser.as_view(),
         name='user-register',
     ),
     path(
-        'user/dashboard',
+        'usuario/perfil',
         views.DashboardUser.as_view(),
         name='user-dashboard',
     ),
     path(
-        'user/update',
+        'usuario/actualizar-datos',
         views.UpdateUser.as_view(),
         name='user-update',
     ),
     path(
-        'user/<int:pk>/delete',
+        'usuario/<int:pk>/eliminar',
         views.DeleteUser.as_view(),
         name="user-delete"),
     path(
-        'user/change-password',
+        'usuario/cambiar-contraseña',
         views.ChangePasswordUser.as_view(),
         name='user-change-password',
     ),

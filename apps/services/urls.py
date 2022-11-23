@@ -8,22 +8,22 @@ app_name = "services_app"
 
 urlpatterns = [
     path(
-        'services',
+        'servicios',
         views.ListService.as_view(),
         name='service-list',
     ),
     path(
-        'services/register',
+        'servicios/registro',
         views.RegisterService.as_view(),
         name='service-register',
     ),
     path(
-        'services/<int:pk>/edit',
+        'servicios/<int:pk>/editar',
         views.UpdateService.as_view(),
         name='service-edit',
     ),
     path(
-        'services/<slug:slug>',
+        'servicios/<slug:slug>',
         views.DetailService.as_view(),
         name="service-detail"),
 ]

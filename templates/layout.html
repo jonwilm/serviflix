@@ -1,67 +1,54 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  
+  <!--Box Icons-->
+  <link rel="stylesheet" href="{% static 'fonts/boxicons/css/boxicons.min.css' %}">
+  <!--AOS Animations-->
+  <link rel="stylesheet" href="{% static 'vendor/node_modules/css/aos.css' %}">
+  <!--Google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Serif+Pro:ital@0;1&display=swap" rel="stylesheet">
+  
   <title>{% block title %}{% endblock title %} | Serviflix</title>
-  <link rel="stylesheet" href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}">
+  
+  {% block stylesheet %}{% endblock stylesheet %}
+  
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{% static 'css/theme-orange.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
   
   {% block css %}{% endblock css %}
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Serviflix</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link px-3" href="{% url 'home_app:home' %}">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link px-3" href="{% url 'services_app:service-list' %}">Servicios</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link px-3 dropdown-toggle btn btn-primary text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {% if user.is_authenticated %}
-              <small class="small">
-                {{ request.user.first_name }}
-              </small>
-              {% else %}
-              Acceso
-              {% endif%}
-            </a>
-            <ul class="dropdown-menu text-center" style="left: initial; right: 0; min-width: initial;">
-              {% if user.is_authenticated %}
-              <li><a class="dropdown-item" href="{% url 'users_app:user-dashboard' %}">Dashboard</a></li>
-              <li><a class="dropdown-item" href="{% url 'users_app:user-logout' %}">Cerrar Sesión</a></li>
-              {% else %}
-              <li><a class="dropdown-item" href="{% url 'users_app:user-login' %}">Iniciar Sesión</a></li>
-              <li><a class="dropdown-item" href="{% url 'users_app:user-register' %}">Registrarse</a></li>
-              {% endif%}
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
   
-  {% block content %}{% endblock content %}
-
+  <!--Preloader Spinner-->
+  <div class="spinner-loader bg-primary text-white">
+    <div class="spinner-grow" role="status"></div>
+    <span class="small d-block ms-2">Loading...</span>
+  </div>
+  
+  {% block navbar %}{% endblock navbar %}
+  
+  <main>
+    {% block content %}{% endblock content %}
+  </main>
+  
   <footer class="py-3 bg-dark text-light">
     <div class="container text-center">
       <small>Serviflix &copy; 2022. Derechos Reservados</small>
     </div>
   </footer>
   
-  <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- scripts -->
+  <script src="{% static 'vendor/node_modules/js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/theme.bundle.js' %}"></script>
   {% block js %}{% endblock js %}
 </body>
 </html>

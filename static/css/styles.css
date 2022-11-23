@@ -1,0 +1,41 @@
+/* MasterSlider */
+.ms-skin-black-2 .ms-nav-next, .ms-skin-black-2 .ms-nav-prev {
+  background: url(../vendor/masterslider/skins/black-2/black-skin-2.png);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  background-position: -88px -26px;
+  border: none;
+  border-radius: 50%;
+}
+.ms-skin-black-2 .ms-nav-next {
+  right: 30px;
+  left: auto;
+  background-position: -86px -103px;
+}
+
+/* Global */
+body {
+  background-color: #EDF1F9;
+}
+.ultrasmall {
+  font-size: 0.5em;
+}
+@media (max-width: 991.98px){
+  .navbar-expand-lg.navbar.navbar-dark .navbar-collapse {
+    background-color: rgb(10, 20, 50) !important;
+  }
+}
+.choices {
+  margin-bottom: 0;
+}
+.input-group .choices .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.bg-dark-blue {
+  background-color: rgb(10, 20, 50) !important;
+}
+.min-w-max {
+  min-width: max-content !important;
+}

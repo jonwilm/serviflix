@@ -12,7 +12,8 @@ class UserAdmin(UserAdmin):
                 'last_name',
                 'type_doc',
                 'n_doc',
-                'address',
+                'province',
+                'location',
                 'phone',
             )
         }),
@@ -41,7 +42,8 @@ class UserAdmin(UserAdmin):
                 'last_name',
                 'type_doc',
                 'n_doc',
-                'address',
+                'province',
+                'location',
                 'phone',
                 'password1',
                 'password2'

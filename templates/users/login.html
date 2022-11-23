@@ -1,44 +1,71 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}Login{% endblock title %}
+{% block title %}Iniciar Sesión{% endblock title %}
+
+{% block css %}{% endblock css %}
+
+{% block navbar %}
+{% include 'partials/navbar-dark-fixed.html' %}
+{% endblock navbar %}
 
 {% block content %}
-  <!-- WRAPPER -->
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-12">
-        <h1 class="text-center"><strong>INICIAR SESIÓN</strong></h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 py-3 rounded shadow-lg">
-        <div class="content-form-login">
-          <form method="POST">
-            {% csrf_token %}
-            <div class="mb-2">
-              <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
-              {{ form.email }}
-            </div>
-            <div class="mb-0">
-              <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
-              {{ form.password }}
-            </div>
-            {% if form.non_field_errors %}
+<section class="position-relative">
+  <div class="bg-pattern text-light w-100 h-100 start-0 top-0 position-absolute"></div>
+  <div class="container pt-11 pt-lg-14 pb-9 pb-lg-11 position-relative z-index-1">
+    <div class="row align-items-center justify-content-center">
+      <div class=" col-xl-4 col-lg-5 col-md-6 col-sm-8 z-index-2">
+        <h2 class="mb-1 display-6">
+          Iniciar Sesión
+        </h2>
+        <p class="mb-4 text-muted">
+          Inicie sesión con los detalles...
+        </p>
+        <div class="position-relative">
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              {% if form.non_field_errors %}
               {% for error in form.non_field_errors %}
-                <div class="alert alert-danger mt-3 mb-0" role="alert">
-                  {{ error|escape }}
-                </div>
+              <div class="alert alert-danger my-3 py-2" role="alert">
+                {{ error|escape }}
+              </div>
               {% endfor %}
-            {% endif %}
-            <div class="d-grid">
-              <button id="submit" type="submit" class="btn btn-success mt-3">ENTRAR</button>
-              <a class="btn btn-primary mt-3" href="{% url 'users_app:user-register' %}">REGISTRATE</a>
-            </div>
-          </form>
+              {% endif %}
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-envelope text-primary"></i>
+                </span>
+                {{ form.email }}
+                <!-- <input type="email" class="form-control" required autofocus placeholder="Email"> -->
+              </div>
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-lock-open text-primary"></i>
+                </span>
+                {{ form.password }}
+                <!-- <input type="password" class="form-control" required placeholder="Contraseña"> -->
+              </div>
+              <div class="mb-3 d-flex justify-content-end">
+                <div>
+                  <label class="text-end d-block small mb-0"><a href="#" class="text-muted link-decoration">Olvidaste tu contraseña?</a></label>
+                </div>
+              </div>
+              
+              <div class="d-grid">
+                <button class="btn btn-primary" type="submit">
+                  Entrar
+                </button>
+              </div>
+            </form>
+            
+            <p class="pt-4 small text-muted">
+              ¿No tienes una cuenta? <a href="{% url 'users_app:user-register' %}" class="ms-2 text-dark fw-semibold link-underline">Registrate</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- END WRAPPER -->
+</section>
 {% endblock content %}

@@ -3,20 +3,28 @@
 
 {% block title %}Registro{% endblock title %}
 
+{% block navbar %}
+  {% include 'partials/navbar-transparent.html' %}
+{% endblock navbar %}
+
 {% block css %}
 <style>
-  .img-portada {
-    height: 50vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-  }
+
 </style>
 {% endblock css %}
 
 {% block content %}
-<div class="container-fluid img-portada" style="background-image: url({{service.image.url}});"></div>
+<section class="position-relative overflow-hidden bg-dark text-white jarallax" data-speed=".2">
+  <img src="{{ service.image.url }}" alt="" class="jarallax-img opacity-50">
+  <div class="container position-relative pt-12 pb-12">
+    <div class="row py-lg-7">
+      <div class="col-xl-10 mx-auto text-center">
+        <h1 class="display-3 mb-4">{{ service.title }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="container">
   <div class="row pt-3">
     <div class="col-12">
@@ -46,14 +54,14 @@
     <div class="col-12 col-lg-6 py-3">
       
       {% if service.plan|stringformat:"s" == "Premium" %}
-        {% if redes %}
-        <div class="p-3 shadow-lg">
-          <h5 class="mb-3"><strong>Redes Sociales</strong></h5>
-          {% for rrss in redes %}
-          <a href="{{ rrss.url }}" target="_blank" rel="noopener noreferrer">{{ rrss.name }}</a>
-          {% endfor %}
-        </div>
-        {% endif %}
+      {% if redes %}
+      <div class="p-3 shadow-lg">
+        <h5 class="mb-3"><strong>Redes Sociales</strong></h5>
+        {% for rrss in redes %}
+        <a href="{{ rrss.url }}" target="_blank" rel="noopener noreferrer">{{ rrss.name }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% endif %}
       
       {% if service.plan|stringformat:"s" == "Premium" %}
@@ -70,23 +78,23 @@
       <div class="p-3 shadow-lg">
         <h5 class="mb-3"><strong>Contacto</strong></h5>
         {% if service.plan|stringformat:"s" == "Premium" %}
-          {% if service.email  %}
-          <p><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
-          {% endif %}
+        {% if service.email  %}
+        <p><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
+        {% endif %}
         {% endif %}
         {% if service.phone1  %}
         <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone1 }}">{{ service.phone1 }}</a></p>
         {% endif %}
         {% if service.plan|stringformat:"s" == "Premium" %}
-          {% if service.phone2  %}
-          <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
-          {% endif %}
-          {% if service.whatsapp  %}
-          <p><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
-          {% endif %}
-          {% if service.web  %}
-          <p><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
-          {% endif %}
+        {% if service.phone2  %}
+        <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
+        {% endif %}
+        {% if service.whatsapp  %}
+        <p><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
+        {% endif %}
+        {% if service.web  %}
+        <p><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
+        {% endif %}
         {% endif %}
       </div>
     </div>

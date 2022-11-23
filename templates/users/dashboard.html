@@ -15,100 +15,132 @@
 </style>
 {% endblock css %}
 
+{% block navbar %}
+{% include 'partials/navbar-dark-fixed.html' %}
+{% endblock navbar %}
+
 {% block content %}
-<div class="container py-5">
-  
-  <div class="row">
-    <div class="col-12">
-      <h1 class="text-left"><strong>DASHBOARD</strong></h1>
-    </div>
-  </div>
-  
-  <div class="row shadow-lg">
-    <div class="col-12 py-3">
-      <div class="row">
-        <div class="col-12 d-flex justify-content-between">
-          <h5><strong>DATOS PERSONALES</strong></h5>
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Opciones
-            </button>
-            <ul class="dropdown-menu text-center">
-              <li><a class="dropdown-item" href="{% url 'users_app:user-update' %}">Modificar datos</a></li>
-              <li><a class="dropdown-item" href="{% url 'users_app:user-change-password' %}">Cambiar contraseña</a></li>
-              <li><a class="dropdown-item" href="{% url 'users_app:user-delete' user.id %}">Eliminar cuenta</a></li>
-            </ul>
+<section class="position-relative pt-7 pt-lg-9">
+  <div class="container position-relative">
+    <div class="">
+      <div class="position-relative pt-9 pb-9 pb-lg-11">
+        <div class="row">
+          <div class="col-lg-3 mb-5 mb-lg-0">
+            <div class="position-relative z-index-1">
+              <div class="card shadow p-3">
+                <div>
+                  <!-- <div class="width-15x height-15x mb-5 rounded-circle shadow bg-no-repat overflow-hidden bg-contain" style="background-image: url(assets/img/avatar/4.jpg);"></div> -->
+                  <h2 class="mb-3 display-6">Perfil</h2>
+                  <h5 class="mb-3">{{ user.first_name }} {{ user.last_name }}</h5>
+                  <!-- <small class="d-block mb-3">Senior Software developer</small> -->
+                  <ul class="list-group list-group-flush mb-0">
+                    <li class="d-flex align-items-stretch list-group-item px-0">
+                      <i class="bx bxs-envelope fs-5 text-primary me-2 align-middle"></i>
+                      <span class="small">{{ user.email }}</span>
+                    </li>
+                    <li class="d-flex align-items-stretch list-group-item px-0">
+                      <i class="bx bxs-id-card fs-5 text-primary me-2 align-middle"></i>
+                      <span class="small">{{ user.type_doc }} {{ user.n_doc }}</span>
+                    </li>
+                    <li class="d-flex align-items-stretch list-group-item px-0">
+                      <i class="bx bxs-map fs-5 text-primary me-2 align-middle"></i>
+                      <span class="small">{{ user.location }}, {{ user.province }}</span>
+                    </li>
+                  </ul>
+                  <ul class="list-group border-top list-group-flush mb-3">
+                    <li class="list-group-item px-0">
+                      <div class="d-grid pt-3">
+                        <a href="{% url 'users_app:user-update' %}" class="btn btn-outline-primary shadow-sm mb-2 py-1">
+                          <i class="bx bxs-edit me-2"></i>
+                          <small>Modificar Datos</small>
+                        </a>
+                        <a href="{% url 'users_app:user-change-password' %}" class="btn btn-outline-primary shadow-sm py-1">
+                          <i class="bx bxs-lock-open me-2"></i>
+                          <small>Cambiar Contraseña</small>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="row">
+              <div class="col-12 mb-3 mb-lg-5">
+                <div class="card table-card table-nowrap overflow-hidden card-table">
+                  <div class="card-header d-flex align-items-center">
+                    <h3 class="mb-0 pe-3 flex-grow-1 text-truncate">Servicios</h3>
+                    <a href="{% url 'services_app:service-register' %}" class="btn btn-outline-primary p-1">
+                      <i class="bx bx-plus fs-5"></i>
+                      <small>Crear Servicio</small>
+                    </a>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                      <thead class="bg-body text-muted small text-uppercase">
+                        <tr>
+                          <th>Servicio</th>
+                          <th class="text-center">Estado</th>
+                          <th class="text-center">Opciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for service in services %}
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="width-7x height-7x me-3 rounded-circle shadow bg-no-repat overflow-hidden bg-cover bg-center" style="background-image: url('{{ service.logo.url }}');"></div>
+                              <div class="d-flex justify-content-start flex-column">
+                                <a href="{% url 'services_app:service-detail' service.slug %}" class="h6 mb-1">{{ service.title }}</a>
+                                <span class="text-gray-400 fw-semibold d-block fs-7">{{ service.company }}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            
+                            {% if service.status == 'Activo' %}
+                            <span class="fw-normal badge bg-tint-success text-success fs-6">
+                              {{ service.status }}
+                            </span>
+                            {% endif %}
+                            {% if service.status == 'Inactivo' %}
+                            <span class="fw-normal badge bg-tint-success text-danger fs-6">
+                              {{ service.status }}
+                            </span>
+                            {% endif %}
+                            {% if service.status == 'Pausado' %}
+                            <span class="fw-normal badge bg-tint-success text-warning fs-6">
+                              {{ service.status }}
+                            </span>
+                            {% endif %}
+                            {% if service.status == 'En revisión' %}
+                            <span class="fw-normal badge bg-tint-success text-info fs-6">
+                              {{ service.status }}
+                            </span>
+                            {% endif %}
+                              
+                          </td>
+                          <td class="text-center">
+                            <a href="{% url 'services_app:service-edit' service.id %}" class="btn btn-outline-primary btn-sm" title="Editar">
+                              <i class="bx bxs-edit fs-5"></i>
+                            </a>
+                            <a href="#!" class="btn btn-outline-primary btn-sm" title="Eliminar">
+                              <i class="bx bxs-trash fs-5"></i>
+                            </a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 col-lg-6">
-      <div class="mb-2">
-        <p><strong>Email: </strong>{{ user.email|default_if_none:"" }}</p>
-      </div>
-      <div class="mb-2">
-        <p><strong>Nombre: </strong>{{ user.first_name|default_if_none:"" }} {{ user.last_name|default_if_none:"" }}</p>
-      </div>
-      <div class="mb-2">
-        <p><strong>Documento de identidad: </strong>{{ user.get_type_doc_display|default_if_none:"" }} {{ user.n_doc|default_if_none:"" }}</p>
-      </div>
-    </div>
-    <div class="col-12 col-lg-6">
-      <div class="mb-2">
-        <p><strong>Dirección: </strong>{{ user.address|default_if_none:"" }}</p>
-      </div>
-      <div class="mb-2">
-        <p><strong>Teléfono: </strong>{{ user.phone|default_if_none:"" }}</p>
-      </div>
-    </div>
   </div>
-  
-  <div class="row mt-3">
-    <div class="col-12">
-      <h1 class="text-left"><strong>SERVICIOS</strong></h1>
-    </div>
-  </div>
-  
-  <div class="row shadow-lg">
-    <div class="col-12 py-3">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Servicio</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          {% for service in services %}
-          <tr>
-            <td>{{ service.title }}</td>
-            <td>
-              {% if service.state %}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 1.2rem;"><path fill="green" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
-              {% else %}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 1.2rem;"><path fill="red" d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
-              {% endif %}
-            </td>
-            <td>
-              <a href="{% url 'services_app:service-detail' service.slug %}" class="me-1" style="text-decoration: none;" title="Ver">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="height: 1.2rem;"><path fill="darkcyan" d="M160 256C160 185.3 217.3 128 288 128C358.7 128 416 185.3 416 256C416 326.7 358.7 384 288 384C217.3 384 160 326.7 160 256zM288 336C332.2 336 368 300.2 368 256C368 211.8 332.2 176 288 176C287.3 176 286.7 176 285.1 176C287.3 181.1 288 186.5 288 192C288 227.3 259.3 256 224 256C218.5 256 213.1 255.3 208 253.1C208 254.7 208 255.3 208 255.1C208 300.2 243.8 336 288 336L288 336zM95.42 112.6C142.5 68.84 207.2 32 288 32C368.8 32 433.5 68.84 480.6 112.6C527.4 156 558.7 207.1 573.5 243.7C576.8 251.6 576.8 260.4 573.5 268.3C558.7 304 527.4 355.1 480.6 399.4C433.5 443.2 368.8 480 288 480C207.2 480 142.5 443.2 95.42 399.4C48.62 355.1 17.34 304 2.461 268.3C-.8205 260.4-.8205 251.6 2.461 243.7C17.34 207.1 48.62 156 95.42 112.6V112.6zM288 80C222.8 80 169.2 109.6 128.1 147.7C89.6 183.5 63.02 225.1 49.44 256C63.02 286 89.6 328.5 128.1 364.3C169.2 402.4 222.8 432 288 432C353.2 432 406.8 402.4 447.9 364.3C486.4 328.5 512.1 286 526.6 256C512.1 225.1 486.4 183.5 447.9 147.7C406.8 109.6 353.2 80 288 80V80z"/></svg>
-              </a>
-              <a href="{% url 'services_app:service-edit' service.id %}" class="me-1" style="text-decoration: none;" title="Editar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 1.2rem;"><path fill="green" d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg>
-              </a>
-              <a href="#" class="me-1" style="text-decoration: none;" title="Eliminar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="height: 1.2rem;"><path fill="red" d="M160 400C160 408.8 152.8 416 144 416C135.2 416 128 408.8 128 400V192C128 183.2 135.2 176 144 176C152.8 176 160 183.2 160 192V400zM240 400C240 408.8 232.8 416 224 416C215.2 416 208 408.8 208 400V192C208 183.2 215.2 176 224 176C232.8 176 240 183.2 240 192V400zM320 400C320 408.8 312.8 416 304 416C295.2 416 288 408.8 288 400V192C288 183.2 295.2 176 304 176C312.8 176 320 183.2 320 192V400zM317.5 24.94L354.2 80H424C437.3 80 448 90.75 448 104C448 117.3 437.3 128 424 128H416V432C416 476.2 380.2 512 336 512H112C67.82 512 32 476.2 32 432V128H24C10.75 128 0 117.3 0 104C0 90.75 10.75 80 24 80H93.82L130.5 24.94C140.9 9.357 158.4 0 177.1 0H270.9C289.6 0 307.1 9.358 317.5 24.94H317.5zM151.5 80H296.5L277.5 51.56C276 49.34 273.5 48 270.9 48H177.1C174.5 48 171.1 49.34 170.5 51.56L151.5 80zM80 432C80 449.7 94.33 464 112 464H336C353.7 464 368 449.7 368 432V128H80V432z"/></svg>
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-            
-        </tbody>
-      </table>
-    </div>
-  </div>
-  
-</div>
+</section>
 {% endblock content %}

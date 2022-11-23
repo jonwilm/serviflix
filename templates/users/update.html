@@ -1,81 +1,96 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}Dashboard{% endblock title %}
-
+{% block title %}Registro de Usuarios{% endblock title %}
 
 {% block css %}{% endblock css %}
 
+{% block navbar %}
+{% include 'partials/navbar-dark-fixed.html' %}
+{% endblock navbar %}
+
 {% block content %}
-<div class="container py-5">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="text-left"><strong>DASHBOARD</strong></h1>
-    </div>
-  </div>
-  <form method="POST">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col-12 py-3 shadow-lg">
-        <div class="row">
-          <div class="col-12">
-            <h5><strong>DATOS PERSONALES</strong></h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 col-lg-6">
-            <div class="mb-2">
-              <label for="{{ form.email.id_for_label }}" class="form-label"><strong>{{ form.email.label }}</strong></label>
-              {{ form.email }}
-            </div>
-            <div class="mb-2">
-              <label for="{{ form.first_name.id_for_label }}" class="form-label"><strong>{{ form.first_name.label }}</strong></label>
-              {{ form.first_name }}
-            </div>
-            <div class="mb-2">
-              <label for="{{ form.last_name.id_for_label }}" class="form-label"><strong>{{ form.last_name.label }}</strong></label>
-              {{ form.last_name }}
-            </div>
-            <div class="mb-2">
-              <label for="" class="form-label"><strong>Documento de identidad</strong></label>
-              <div class="input-group">
+<section class="position-relative">
+  <div class="container pt-11 pt-lg-14 pb-9 pb-lg-11 position-relative z-index-1">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-6 col-sm-8 z-index-2">
+        <h2 class="mb-1 display-6">
+          Modificar datos
+        </h2>
+        <div class="position-relative">
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+              <div class="alert alert-danger my-3 py-2" role="alert">
+                {{ error|escape }}
+              </div>
+              {% endfor %}
+              {% endif %}
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-envelope text-primary"></i>
+                </span>
+                {{ form.email }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-user text-primary"></i>
+                </span>
+                {{ form.first_name }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-user text-primary"></i>
+                </span>
+                {{ form.last_name }}
+              </div>
+              
+              <div class="input-icon-group input-group mb-3 d-flex">
                 {{ form.type_doc }}
+                <span class="input-icon">
+                  <i class="bx bxs-id-card text-primary"></i>
+                </span>
                 {{ form.n_doc }}
               </div>
-            </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-map text-primary"></i>
+                </span>
+                {{ form.province }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-map text-primary"></i>
+                </span>
+                {{ form.location }}
+              </div>
+              
+              <div class="input-icon-group mb-3">
+                <span class="input-icon">
+                  <i class="bx bxs-phone text-primary"></i>
+                </span>
+                {{ form.phone }}
+              </div>
+              
+              <div class="d-grid">
+                <button class="btn btn-secondary" type="submit">
+                  Modificar
+                </button>
+              </div>
+            </form>
+            <p class="pt-3 small text-center">
+              <a href="{% url 'users_app:user-dashboard' %}" class="text-dark fw-semibold link-decoration">Cancelar</a>
+            </p>
           </div>
-          <div class="col-12 col-lg-6">
-            <div class="mb-2">
-              <label for="{{ form.address.id_for_label }}" class="form-label"><strong>{{ form.address.label }}</strong></label>
-              {{ form.address }}
-            </div>
-            <div class="mb-2">
-              <label for="{{ form.phone.id_for_label }}" class="form-label"><strong>{{ form.phone.label }}</strong></label>
-              {{ form.phone }}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 d-flex justify-content-end">
-            <a class="btn btn-secondary btn-sm mt-3 ms-3" href="{% url 'users_app:user-dashboard' %}">CANCELAR</a>
-            <button id="submit" type="submit" class="btn btn-primary btn-sm mt-3 ms-3">GUARDAR</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3">
-        <div class="">
-          {% if form.non_field_errors %}
-          {% for error in form.non_field_errors %}
-          <div class="alert alert-danger mt-3 mb-0" role="alert">
-            {{ error|escape }}
-          </div>
-          {% endfor %}
-          {% endif %}
         </div>
       </div>
     </div>
   </div>
-</form>
+</section>
 {% endblock content %}

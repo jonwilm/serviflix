@@ -1,8 +1,77 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}Home{% endblock title %}
+{% block title %}Inicio{% endblock title %}
+
+{% block stylesheet %}
+<!--swiper-->
+<link rel="stylesheet" href="{% static 'vendor/node_modules/css/swiper-bundle.min.css' %}">
+{% endblock stylesheet %}
+
+{% block navbar %}
+  {% include 'partials/navbar-transparent.html' %}
+{% endblock navbar %}
+  
 
 {% block content %}
-  <h1 class="text-center py-5">HOME</h1>
+<!-- SwiperSlider -->
+<section class="position-relative overflow-hidden">
+  <!-- Swiper classic -->
+  <div class="swiper-container swiper-classic overflow-hidden position-relative" style="max-height: 100vh;">
+    <div class="swiper-wrapper">
+      {% for service in services_pub %}
+      <div class="swiper-slide" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url({{service.image.url}})">
+        <div class="bg-dark position-absolute start-0 top-0 w-100 h-100 opacity-25"></div>
+        <div class="container h-100 text-white position-relative z-index-1">
+          <div class="row d-flex align-items-center h-100">
+            <div class="col-xl-10 mx-auto text-center">
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <h2 class="display-1 mb-3">
+                    {{ service.title }}
+                  </h2>
+                </li>
+                <li>
+                  <p class="lead mb-4 mb-lg-5">
+                    {{ service.description }}
+                  </p>
+                </li>
+                <li>
+                  <a href="#" class="btn btn-primary btn-hover-text mb-2 me-2">
+                    <span class="btn-hover-label label-default">Ver más</span>
+                    <span class="btn-hover-label label-hover">Ver más</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!--:Add Pagination -->
+    <div class="swiper-pagination swiperClassic-pagination mb-2 mb-lg-7 z-index-1 text-white"></div>
+  </div>
+</section>
+<!-- End SwiperSlider -->
 {% endblock %}
+
+{% block js %}
+<script src="{% static 'vendor/node_modules/js/swiper-bundle.min.js' %}"></script>
+<script>
+  //Swiper Classic
+  var swiperClassic = new Swiper(".swiper-classic", {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    arrow: true,
+    loop: true,
+    autoplay: {
+      delay: 2500
+    },
+    pagination: {
+      el: ".swiperClassic-pagination",
+      clickable: true
+    }
+  });
+</script>
+{% endblock js %}

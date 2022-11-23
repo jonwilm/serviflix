@@ -5,8 +5,9 @@ from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from .models import PaymentMethods, Service, SocialNetwork
-from .forms import RegisterServiceForm, UpdateServiceForm
+from .models import PaymentMethods, Service, SocialNetwork, Category
+from .forms import RegisterServiceForm, UpdateServiceForm, SocialServiceFormSet, PaymentMethodsServicesFormSet
+from apps.plans.models import Plan, TimeDiscount
 
 
 class ListService(ListView):
@@ -15,36 +16,137 @@ class ListService(ListView):
 
     def get_context_data(self, **kwargs):
         services_all = super().get_context_data(**kwargs)
-        services_pub = Service.objects.filter(state=True)
+        services_pub = Service.objects.filter(status='Activo')
+        categories = Category.objects.all()
         context = {
             'services_all': services_all['object_list'],
             'services_pub': services_pub,
+            'categories': categories,
         }
         return context
 
 
 class RegisterService(LoginRequiredMixin, CreateView):
-    model = Service
     form_class = RegisterServiceForm
     template_name = 'services/register.html'
     success_url = reverse_lazy('users_app:user-dashboard')
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super(RegisterService, self).get_context_data(**kwargs)
+        if "social_formset" not in context:
+            context['social_formset'] = SocialServiceFormSet(
+                queryset=SocialNetwork.objects.none(),
+            )
+        if "paymethod_formset" not in context:
+            context['paymethod_formset'] = PaymentMethodsServicesFormSet(
+                queryset=PaymentMethods.objects.none(),
+            )
+        context['plan_basic'] = Plan.objects.filter(name='Básico')
+        context['plan_premium'] = Plan.objects.filter(name='Premium')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form = self.get_form()
+        social_formset = SocialServiceFormSet(request.POST)
+        paymethod_formset = PaymentMethodsServicesFormSet(request.POST)
+        if social_formset.is_valid() and paymethod_formset.is_valid() and form.is_valid():
+            return self.form_valid(form, social_formset, paymethod_formset)
+        else:
+            return self.form_invalid(form, social_formset, paymethod_formset)
+
+    def form_invalid(self, form, social_formset, paymethod_formset):
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                social_formset=social_formset,
+                paymethod_formset=paymethod_formset
+            )
+        )
+
+    def form_valid(self, form, social_formset, paymethod_formset):
+        service = form.save(commit=False)
+        service.user = self.request.user
+        service.save()
+        instancesSocial = social_formset.save(commit=False)
+        for instanceSocial in instancesSocial:
+            instanceSocial.service = service
+            instanceSocial.save()
+        instancesPaymethod = paymethod_formset.save(commit=False)
+        for instancePaymethod in instancesPaymethod:
+            instancePaymethod.service = service
+            instancePaymethod.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return str(self.success_url)
 
 
 class UpdateService(LoginRequiredMixin, UpdateView):
     model = Service
-    form_class = UpdateServiceForm
+    form_class = RegisterServiceForm
     template_name = 'services/update.html'
-    success_message = 'Datos Actualizados con exito'
+    success_url = reverse_lazy('users_app:user-dashboard')
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    def get_context_data(self, **kwargs):
+        context = super(UpdateService, self).get_context_data(**kwargs)
+        if "social_formset" not in context:
+            context['social_formset'] = SocialServiceFormSet(
+                queryset=SocialNetwork.objects.filter(service=self.kwargs['pk']),
+            )
+        if "paymethod_formset" not in context:
+            context['paymethod_formset'] = PaymentMethodsServicesFormSet(
+                queryset=PaymentMethods.objects.filter(service=self.kwargs['pk']),
+            )
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        social_formset = SocialServiceFormSet(
+            request.POST,
+            queryset=SocialNetwork.objects.filter(service=self.kwargs['pk']),
+        )
+        paymethod_formset = PaymentMethodsServicesFormSet(
+            request.POST,
+            queryset=PaymentMethods.objects.filter(service=self.kwargs['pk']),
+        )
+        if social_formset.is_valid() and paymethod_formset.is_valid() and form.is_valid():
+            return self.form_valid(form, social_formset, paymethod_formset)
+        else:
+            return self.form_invalid(form, social_formset, paymethod_formset)
+
+    def form_invalid(self, form, social_formset, paymethod_formset):
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                social_formset=social_formset,
+                paymethod_formset=paymethod_formset
+            )
+        )
+
+    def form_valid(self, form, social_formset, paymethod_formset):
+        self.object = form.save()
+        instancesSocial = social_formset.save(commit=False)
+        for instanceSocial in instancesSocial:
+            instanceSocial.service = self.object
+            instanceSocial.save()
+        instancesPaymethod = paymethod_formset.save(commit=False)
+        for instancePaymethod in instancesPaymethod:
+            instancePaymethod.service = self.object
+            instancePaymethod.save()
+
+        if len(social_formset.deleted_objects) > 0:
+            for obj in social_formset.deleted_objects:
+                obj.delete()
+        if len(paymethod_formset.deleted_objects) > 0:
+            for obj in paymethod_formset.deleted_objects:
+                obj.delete()
+
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('users_app:user-dashboard')
+        return str(self.success_url)
 
 class DetailService(DetailView):
     model = Service

@@ -1,34 +1,525 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}Registro{% endblock title %}
+{% block title %}Crear Servicio{% endblock title %}
+
+{% block stylesheet %}
+<!--Select css-->
+<link rel="stylesheet" href="{% static 'vendor/node_modules/css/choices.min.css' %}">
+<!--Form steps css-->
+<link rel="stylesheet" href="{% static 'vendor/node_modules/css/bs-stepper.min.css' %}">
+<!-- MapBox -->
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css'>
+{% endblock stylesheet %}
+
+{% block navbar %}
+{% include 'partials/navbar-dark-fixed.html' %}
+{% endblock navbar %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="text-center"><strong>REGISTRO DE SERVICIO</strong></h1>
+<section class="position-relative">
+  <div class="container pt-9 pt-lg-11 pb-9 pb-lg-11 position-relative z-index-1">
+    <div class="row">
+      <div class="col">
+        <h2 class="mb-3 display-6">
+          Crear Servicio
+        </h2>
+      </div>
     </div>
+    {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger my-3 py-2" role="alert">
+      {{ error|escape }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!--Steps vertical start-->
+    <div class="bs-stepper bs-stepper-vertical row" id="stepperDemoVertical">
+      <!--Stepper header start-->
+      <div class="bs-stepper-header d-none d-md-flex flex-column justify-content-start align-items-start col-md-4" role="tablist">
+        <div class="card card-body bg-transparent p-0 border-0 w-100 h-100">
+          <!--Step 1-->
+          <div class="step active" data-target="#stepper-step-v1">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv1" aria-controls="stepper-step-v1" aria-selected="true">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-cart-alt"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Membresia</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 2-->
+          <div class="step" data-target="#stepper-step-v2">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv2" aria-controls="stepper-step-v2" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-info-circle"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Información general</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 3-->
+          <div class="step" data-target="#stepper-step-v3">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv3" aria-controls="stepper-step-v3" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-images"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Imagen</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 4-->
+          <div class="step" data-target="#stepper-step-v4">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv4" aria-controls="stepper-step-v4" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-phone"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Información de contacto</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 5-->
+          <div class="step" data-target="#stepper-step-v5">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv5" aria-controls="stepper-step-v5" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-time"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Horario</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 6-->
+          <div class="step" data-target="#stepper-step-v6">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv6" aria-controls="stepper-step-v6" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-map-alt"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Ubicación</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 7-->
+          <div class="step" data-target="#stepper-step-v7">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv7" aria-controls="stepper-step-v7" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-mobile"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Redes Sociales</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 8-->
+          <div class="step" data-target="#stepper-step-v8">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv8" aria-controls="stepper-step-v8" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-credit-card"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Metodos de Pago</span>
+              </span>
+            </button>
+          </div>
+          <!--Step 9-->
+          <div class="step" data-target="#stepper-step-v9">
+            <button type="button" class="step-trigger flex-nowrap p-0" role="tab" id="stepperDemotriggerv9" aria-controls="stepper-step-v9" aria-selected="false">
+              <span class="bs-stepper-circle">
+                <i class="bx bx-search-alt"></i>
+              </span>
+              <span class="flex-grow-1 flex-wrap d-flex flex-column jusitfy-content-start text-start">
+                <span class="bs-stepper-label h6 m-0">Detalles del servicio</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--Stepper header end-->
+      
+      <!--Stepper content start-->
+      <div class="bs-stepper-content col-md-8">
+        <div class="card card-body">
+          <form class="h-100 d-flex flex-column" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!--Step-1-->
+            <div id="stepper-step-v1" class="content h-100" aria-labelledby="stepper-step-v1">
+              <div class="d-flex flex-column h-100">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Membresia</h6>
+                  <p class="text-muted small mb-0">Selecciona el tipo de membresia y plan de pago</p>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  <p>Membresia</p>
+                  <div class="mb-3">
+                    {% for choice in form.plan %}
+                    {{ choice.choice_label }}
+                    <span class="radio">{{ choice.tag }}</span>
+                    {% endfor %}
+                    <!-- <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                      <label class="form-check-label" for="inlineRadio1">1</label>
+                    </div> -->
+                  </div>
+                  <div class="mb-3">
+                    <label for="" class="form-label">Plan</label>
+                    {{form.cuota}}
+                  </div>
+                  
+                  <!--Pricing container-->
+                  <div class="container">
+                    <!--Pricing row-->
+                    <div class="no-gutters row">
+                      <!--Pricing col-->
+                      <div class="col-lg-6">
+                        <!--Pricing Card-->
+                        <div class="card py-5 h-100 border card-body">
+                          <div class="rounded-top mb-4 position-relative overflow-hidden text-center">
+                            <h5 class="title mb-4">Básico</h5>
+                            <div>
+                              <h2 class="display-4 mb-2 lh-1"><sub class="small">$</sub>{{ plan_basic.price }}</h2>
+                            </div>
+                          </div>
+                          <ul class="text-center list-unstyled mb-4">
+                            <li class="mb-2 text-muted">Beneficios</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <!--Pricing col-->
+                      <div class="col-lg-6">
+                        <!--Pricing Card-->
+                        <div class="card pt-6 pb-5 h-100 border-0 shadow-lg bg-shade-primary text-white card-body position-relative z-index-1">
+                          <div class="rounded-top mb-4 position-relative overflow-hidden text-center">
+                            <h5 class="title mb-4">Premium</h5>
+                            <div>
+                              <h2 class="display-4 mb-2 lh-1"><sub class="small">$</sub>1.999</h2>
+                            </div>
+                            <!--/.price-->
+                          </div>
+                          <!--/.price-card-header-->
+                          <ul class="text-center list-unstyled mb-4">
+                            <li class="mb-2 text-muted">Beneficios</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-end">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-2-->
+            <div id="stepper-step-v2" class="content h-100" aria-labelledby="stepper-step-v2">
+              <div class="d-flex flex-column h-100">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Informacion General</h6>
+                  <p class="text-muted small mb-0">Presenta el servicio</p>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{form.title}}
+                  {{form.company}}
+                  {{form.description}}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-3-->
+            <div id="stepper-step-v3" class="content h-100" aria-labelledby="stepper-step-v3">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Imagen</h6>
+                  <p class="text-muted small mb-0">Agrega la imagen del servicio</p>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{form.logo}}
+                  {{form.image}}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-4-->
+            <div id="stepper-step-v4" class="content h-100" aria-labelledby="stepper-step-v4">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Informacion de contacto</h6>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{form.email}}
+                  {{form.phone1}}
+                  {{form.phone2}}
+                  {{form.whatsapp}}
+                  {{form.web}}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-5-->
+            <div id="stepper-step-v5" class="content h-100" aria-labelledby="stepper-step-v5">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Horario de trabajo</h6>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{form.office_hours}}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-6-->
+            <div id="stepper-step-v6" class="content h-100" aria-labelledby="stepper-step-v6">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Ubicación</h6>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{form.address}}
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d986.3705932963069!2d-71.24874017087913!3d8.549526325818272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x52652fa23fdf11a1!2zOMKwMzInNTguMyJOIDcxwrAxNCc1My41Ilc!5e0!3m2!1ses!2sve!4v1668836061352!5m2!1ses!2sve" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  <!-- <div id='map' style='width: 100%; height: 300px;'></div> -->
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-7-->
+            <div id="stepper-step-v7" class="content h-100" aria-labelledby="stepper-step-v7">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Redes Sociales</h6>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{ social_formset.management_form }}
+                  {% for form_social in social_formset %}
+                  <div class="input-group">
+                    {{ form_social.name }}
+                    {{ form_social.url }}
+                    {{ form_social.DELETE }}
+                  </div>
+                  {% endfor %}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-8-->
+            <div id="stepper-step-v8" class="content h-100" aria-labelledby="stepper-step-v8">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Metodos de pago</h6>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{ paymethod_formset.management_form }}
+                  {% for form_paymethod in paymethod_formset %}
+                  {{ form_paymethod.paymethod }}
+                  {{ form_paymethod.DELETE }}
+                  {% endfor %}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Volver
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="stepDemoVertical.next()">
+                    Continuar <i class="bx bxs-right-arrow-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!--Step-9-->
+            <div id="stepper-step-v9" class="content h-100" aria-labelledby="stepper-step-v9">
+              <div class="d-flex h-100 flex-column">
+                <!--Step Title-->
+                <div class="flex-shrink-0 border-bottom">
+                  <h6 class="mb-1">Detalles del servicio</h6>
+                  <p class="text-muted small mb-0">Detalles para encontrarte</p>
+                </div>
+                <!--Step main content-->
+                <div class="flex-grow-1 py-3">
+                  {{form.category}}
+                </div>
+                <!--Step footer-->
+                <div class="d-flex pt-3 border-top justify-content-between">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="stepDemoVertical.previous()">
+                    <i class="bx bxs-left-arrow-alt"></i> Back
+                  </button>
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    Submit <i class="bx bx-send"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--Steps vertical end-->
   </div>
-  <div class="row">
-    <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3">
-      <div class="">
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{ form }}
-          {% if form.non_field_errors %}
-          {% for error in form.non_field_errors %}
-          <div class="alert alert-danger mt-3 mb-0" role="alert">
-            {{ error|escape }}
+</section>
+
+
+
+<!-- <section class="position-relative">
+  <div class="container pt-11 pt-lg-14 pb-9 pb-lg-11 position-relative z-index-1">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-12 z-index-2">
+        <h2 class="mb-1 display-6">
+          Crear Servicio
+        </h2>
+        <div class="position-relative">
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+              <div class="alert alert-danger my-3 py-2" role="alert">
+                {{ error|escape }}
+              </div>
+              {% endfor %}
+              {% endif %}
+              
+              {{ form }}
+              
+              {{ social_formset.management_form }}
+              {% for form_social in social_formset %}
+              {{ form_social.name }}
+              {{ form_social.url }}
+              {% endfor %}
+              
+              <div class="d-grid">
+                <button class="btn btn-secondary btn-sm" type="submit">
+                  Crear Servicio
+                </button>
+              </div>
+            </form>
+            
+            <p class="pt-3 small text-muted text-center">
+              <a href="{% url 'users_app:user-dashboard' %}" class="text-dark fw-semibold link-decoration">Cancelar</a>
+            </p>
+            
           </div>
-          {% endfor %}
-          {% endif %}
-          <div class="d-grid">
-            <button id="submit" type="submit" class="btn btn-primary mt-3">REGISTRAR</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section> -->
 {% endblock content %}
+
+{% block js %}
+<!--Form steps script-->
+<script src="{% static 'vendor/node_modules/js/bs-stepper.min.js' %}"></script>
+<script>
+  var stepDemoVertical = new Stepper(document.querySelector('#stepperDemoVertical'), {
+    linear: false,
+    animation: true,
+  });
+  stepDemoVertical.next();
+  stepDemoVertical.previous()
+  
+</script>
+<script src="{% static 'vendor/node_modules/js/choices.min.js' %}"></script>
+<script>
+  var cSelect = document.querySelectorAll("[data-choices]");
+  cSelect.forEach(el => {
+    const t = { ...el.dataset.choices ? JSON.parse(el.dataset.choices) : {},
+    ...{
+      classNames: {
+        containerInner: el.className,
+        input: "form-control",
+        inputCloned: "form-control-sm",
+        listDropdown: "dropdown-menu",
+        itemChoice: "dropdown-item",
+        activeState: "show",
+        selectedState: "active"
+      }
+    }
+  }
+  new Choices(el, t)
+});
+</script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js'></script>
+<script>
+  // TO MAKE THE MAP APPEAR YOU MUST
+  // ADD YOUR ACCESS TOKEN FROM
+  // https://account.mapbox.com
+  mapboxgl.accessToken = '<your access token here>';
+    const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      style: 'mapbox://styles/mapbox/streets-v12', // style URL
+      center: [-74.5, 40], // starting position [lng, lat]
+      zoom: 9, // starting zoom
+    });
+  </script>
+  {% endblock js %}
+  

@@ -6,22 +6,12 @@ from apps.users.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    MALE = 'M'
-    FEMALE = 'F'
-
-    GENDER_CHOICES = [
-        (MALE, 'Masculino'),
-        (FEMALE, 'Femenino'),
-    ]
-
-    DNI = 'D'
-    PASSPORT = 'P'
-    RNC = 'R'
-
+    
     TYPE_DOC_CHOICES = [
-        (DNI, 'DNI'),
-        (PASSPORT, 'Pasaporte'),
-        (RNC, 'RNC'),
+        ('DNI', 'DNI'),
+        ('CUIT', 'CUIT'),
+        ('CUIL', 'CUIL'),
+        ('PASSPORT', 'Pasaporte'),
     ]
 
     SUPERU = '1'
@@ -34,14 +24,41 @@ class User(AbstractBaseUser, PermissionsMixin):
         (CLIENT, 'Cliente'),
     ]
 
-    first_name = models.CharField('Nombres', max_length=100, blank=True, null=True)
-    last_name = models.CharField('Apellidos', max_length=100, blank=True, null=True)
-    email = models.EmailField('Correo electronico', unique=True, blank=False, null=False)
-    type_doc = models.CharField('Tipo de Documento', max_length=1, choices=TYPE_DOC_CHOICES, blank=True, null=True)
-    n_doc = models.CharField('Numero de Documento', max_length=100, blank=True, null=True)
-    address = models.TextField('Direccion', blank=True, null=True)
-    phone = models.CharField('Telefono', max_length=100, blank=True, null=True)
-    type_user = models.CharField('Tipo de Usuario', max_length=1, choices=TYPE_USER, default='3', blank=False, null=False)
+    PROVINCE = [
+        ('Buenos Aires', 'Buenos Aires'),
+        ('Catamarca', 'Catamarca'),
+        ('Chaco', 'Chaco'),
+        ('Chubut', 'Chubut'),
+        ('Córdoba', 'Córdoba'),
+        ('Corrientes', 'Corrientes'),
+        ('Entre Ríos', 'Entre Ríos'),
+        ('Formosa', 'Formosa'),
+        ('Jujuy', 'Jujuy'),
+        ('La Pampa', 'La Pampa'),
+        ('La Rioja', 'La Rioja'),
+        ('Mendoza', 'Mendoza'),
+        ('Misiones', 'Misiones'),
+        ('Neuquén', 'Neuquén'),
+        ('Río Negro', 'Río Negro'),
+        ('Salta', 'Salta'),
+        ('San Juan', 'San Juan'),
+        ('San Luis', 'San Luis'),
+        ('Santa Cruz', 'Santa Cruz'),
+        ('Santa Fe', 'Santa Fe'),
+        ('Santiago del Estero', 'Santiago del Estero'),
+        ('Tierra del Fuego', 'Tierra del Fuego'),
+        ('Tucumán', 'Tucumán'),
+    ]
+
+    first_name = models.CharField('Nombres', max_length=100)
+    last_name = models.CharField('Apellidos', max_length=100)
+    email = models.EmailField('Correo electronico', unique=True,)
+    type_doc = models.CharField('Tipo de Documento', max_length=10, choices=TYPE_DOC_CHOICES)
+    n_doc = models.CharField('Numero de Documento', max_length=100)
+    province = models.CharField('Provincia', max_length=100, choices=PROVINCE)
+    location = models.CharField('Localidad', max_length=100)
+    phone = models.CharField('Telefono', max_length=100)
+    type_user = models.CharField('Tipo de Usuario', max_length=1, choices=TYPE_USER, default='3')
     #
     is_staff = models.BooleanField('Staff', default=False, help_text='Indica que el usuario pertenece al staff de SERVIFLIX')
     is_active = models.BooleanField('Usuario Activo', default=True, help_text='Indica que el usuario esta activo en la plataforma')

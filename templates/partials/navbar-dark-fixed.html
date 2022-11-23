@@ -1,0 +1,113 @@
+{% load static %}
+
+<!-- Navbar -->
+<header class="z-index-fixed header-fixed-top">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark navbar-link-white bg-dark-blue">
+    <div class="container position-relative z-index-1">
+      <a class="navbar-brand" href="{% url 'home_app:home' %}">
+        <!-- <img src="{% static 'img/logos/logo-serviflix-full.png' %}" alt="Serviflix" class="img-fluid navbar-brand-sticky w-60"> -->
+        <img src="{% static 'img/logos/logo-serviflix-full.svg' %}" alt="Serviflix" class="img-fluid navbar-brand-transparent w-60">
+      </a>
+      <div class="d-flex align-items-center navbar-no-collapse-items order-lg-last">
+        <button class="navbar-toggler order-last" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbarTheme" aria-controls="mainNavbarTheme" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">
+            <i></i>
+          </span>
+        </button>
+        <div class="nav-item me-3 me-lg-0">
+          <a href="#" data-bs-target="#offcanvasSearchTop" data-bs-toggle="offcanvas" class="nav-link lh-1">
+            <i class="bx bx-search-alt-2 fs-5 lh-1"> </i>
+          </a> 
+        </div>
+        <div class="nav-item me-3 me-lg-0 dropdown">
+          <a href="#" class="btn btn-primary rounded-pill py-0 px-0" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+            <!-- <img src="assets/img/avatar/4.jpg" alt="" class="avatar sm rounded-circle me-1"> -->
+            <i class="bx bxs-user-circle bx-md"></i>
+            {% if user.is_authenticated %}
+            <small class="pe-2">
+              {{ request.user.first_name }}
+            </small>
+            {% endif%}
+          </a>
+          <div class="dropdown-menu dropdown-menu-end min-w-max p-0">
+            {% if user.is_authenticated %}
+            <a href="{% url 'users_app:user-dashboard' %}" class="dropdown-header border-bottom p-4">
+              <div class="d-flex align-items-center">
+                <div>
+                  <i class="bx bxs-user-circle" style="font-size: 5rem; transform: translateX(-0.5rem);"></i>
+                  <!-- <img src="assets/img/avatar/4.jpg" alt="" class="avatar xl rounded-pill me-3"> -->
+                </div>
+                <div>
+                  <h5 class="mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+                  <span class="text-muted d-block mb-2">{{ request.user.email }}</span>
+                  <div class="small d-inline-block link-underline fw-semibold text-muted">
+                    Perfil
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="{% url 'users_app:user-logout' %}" class="dropdown-item p-3">
+              <span class="d-block text-end">
+                Cerrar Sesión
+              </span>
+            </a>
+            {% else %}
+            <a href="{% url 'users_app:user-login' %}" class="dropdown-item p-3">
+              <span class="d-block text-end">
+                Iniciar Sesión
+              </span>
+            </a>
+            <a href="{% url 'users_app:user-register' %}" class="dropdown-item p-3">
+              <span class="d-block text-end">
+                Registrarse
+              </span>
+            </a>
+            {% endif%}
+          </div>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse" id="mainNavbarTheme">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home_app:home' %}">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="!#">Quienes Somos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'services_app:service-list' %}">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="!#">Contacto</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Search bar Offcanvas from top -->
+<div class="offcanvas offcanvas-top" data-bs-scroll="true" tabindex="-1" id="offcanvasSearchTop" aria-labelledby="offcanvasSearchTopLabel" style="height:95px">
+  <div class="offcanvas-body">
+    <div class="position-relative">
+      <!--Close search offcanvas-->
+      <div class="position-absolute end-0 top-0 d-flex align-items-center h-100 justify-content-center">
+        <button type="button" class="btn-outline-primary rounded-circle btn p-0 width-4x height-4x flex-center small" data-bs-dismiss="offcanvas" aria-label="Close">
+          <i class="bx bx-x fs-4"></i>
+        </button>
+      </div>
+      <div class="container">
+        <!--Search form-->
+        <form class="mb-0">
+          <div class="d-flex align-items-center">
+            <div class="d-flex flex-grow-1 align-items-center">
+              <i class="bx bx-search text-primary"></i>
+              <input type="text" placeholder="Buscar..." autofocus class="form-control shadow-none border-0 flex-grow-1 form-control-lg">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Search bar Offcanvas from top -->

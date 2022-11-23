@@ -1,8 +1,9 @@
 from django import forms
+from django.forms import inlineformset_factory, modelformset_factory
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
 
-from apps.services.models import Service
+from apps.services.models import Service, SocialNetwork, PaymentMethods
 
 
 class RegisterServiceForm(forms.ModelForm):
@@ -10,13 +11,14 @@ class RegisterServiceForm(forms.ModelForm):
         model = Service
         fields = [
             'category', 'title', 'company', 'plan', 'cuota',
-            'image', 'description',
-            'address', 'phone1', 'phone2', 'whatsapp', 'office_hours',
+            'logo', 'image', 'description',
+            'address', 'email', 'phone1', 'phone2', 'whatsapp', 'web', 'office_hours',
         ]
         widgets = {
             'category': forms.Select(
                 attrs={
-                    'class': 'form-select',
+                    'class': 'form-control',
+                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
             'title': forms.TextInput(
@@ -31,14 +33,21 @@ class RegisterServiceForm(forms.ModelForm):
                     'placeholder': 'Empresa'
                 }
             ),
-            'plan': forms.Select(
+            'plan': forms.RadioSelect(
                 attrs={
-                    'class': 'form-select',
+                    'class': 'form-check-input',
+                    # 'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
             'cuota': forms.Select(
                 attrs={
                     'class': 'form-select',
+                    # 'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                }
+            ),
+            'logo': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
                 }
             ),
             'image': forms.FileInput(
@@ -62,6 +71,12 @@ class RegisterServiceForm(forms.ModelForm):
                     'style': 'resize: none;'
                 }
             ),
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Correo electronico'
+                }
+            ),
             'phone1': forms.TextInput(
                 attrs={
                     'class': 'form-control',
@@ -80,6 +95,12 @@ class RegisterServiceForm(forms.ModelForm):
                     'placeholder': 'Whatsapp'
                 }
             ),
+            'web': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Pagina Web'
+                }
+            ),
             'office_hours': forms.Textarea(
                 attrs={
                     'class': 'form-control',
@@ -89,10 +110,6 @@ class RegisterServiceForm(forms.ModelForm):
                 }
             ),
         }
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(RegisterServiceForm, self).__init__(*args, **kwargs)
 
 
 class UpdateServiceForm(forms.ModelForm):
@@ -100,13 +117,14 @@ class UpdateServiceForm(forms.ModelForm):
         model = Service
         fields = [
             'category', 'title', 'company', 'plan', 'cuota',
-            'image', 'description',
-            'address', 'phone1', 'phone2', 'whatsapp', 'office_hours',
+            'logo', 'image', 'description',
+            'address', 'email', 'phone1', 'phone2', 'whatsapp', 'web', 'office_hours',
         ]
         widgets = {
             'category': forms.Select(
                 attrs={
-                    'class': 'form-select',
+                    'class': 'form-control',
+                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
             'title': forms.TextInput(
@@ -123,12 +141,19 @@ class UpdateServiceForm(forms.ModelForm):
             ),
             'plan': forms.Select(
                 attrs={
-                    'class': 'form-select',
+                    'class': 'form-control',
+                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
             'cuota': forms.Select(
                 attrs={
-                    'class': 'form-select',
+                    'class': 'form-control',
+                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                }
+            ),
+            'logo': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
                 }
             ),
             'image': forms.FileInput(
@@ -152,6 +177,12 @@ class UpdateServiceForm(forms.ModelForm):
                     'style': 'resize: none;'
                 }
             ),
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Correo electronico'
+                }
+            ),
             'phone1': forms.TextInput(
                 attrs={
                     'class': 'form-control',
@@ -170,6 +201,12 @@ class UpdateServiceForm(forms.ModelForm):
                     'placeholder': 'Whatsapp'
                 }
             ),
+            'web': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Pagina Web'
+                }
+            ),
             'office_hours': forms.Textarea(
                 attrs={
                     'class': 'form-control',
@@ -179,3 +216,55 @@ class UpdateServiceForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class SocialServiceForm(forms.ModelForm):
+    class Meta:
+        model = SocialNetwork
+        fields = ('name', 'url',)
+
+        widgets = {
+            'name': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                }
+            ),
+            'url': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Url'
+                }
+            ),
+        }
+
+
+SocialServiceFormSet = modelformset_factory(
+    SocialNetwork,
+    form=SocialServiceForm,
+    extra=0,
+    can_delete=True,
+)
+
+
+class PaymentMethodsServicesForm(forms.ModelForm):
+    class Meta:
+        model = PaymentMethods
+        fields = ('paymethod',)
+
+        widgets = {
+            'paymethod': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                }
+            ),
+        }
+
+
+PaymentMethodsServicesFormSet = modelformset_factory(
+    PaymentMethods,
+    form=PaymentMethodsServicesForm,
+    extra=0,
+    can_delete=True,
+)
