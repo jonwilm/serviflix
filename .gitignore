@@ -94,7 +94,7 @@ ENV/
 .ropeproject
 
 # js
-node_modules/
+# node_modules/
 package-lock.json
 *.sqlite
 *.sqlite3
