@@ -88,10 +88,10 @@
                 {{ form.password }}
               </div>
               <ul class="mb-3">
-                <li class="ultrasmall text-muted">Su contraseña no puede ser similar a otros componentes de su información personal.</li>
-                <li class="ultrasmall text-muted">Su contraseña debe contener por lo menos 8 caracteres.</li>
-                <li class="ultrasmall text-muted">Su contraseña no puede ser una contraseña usada muy comúnmente.</li>
-                <li class="ultrasmall text-muted">Su contraseña no puede estar formada exclusivamente por números.</li>
+                <li class="small text-muted">Su contraseña no puede ser similar a otros componentes de su información personal.</li>
+                <li class="small text-muted">Su contraseña debe contener por lo menos 8 caracteres.</li>
+                <li class="small text-muted">Su contraseña no puede ser una contraseña usada muy comúnmente.</li>
+                <li class="small text-muted">Su contraseña no puede estar formada exclusivamente por números.</li>
               </ul>
               
               <div class="input-icon-group mb-1">
@@ -101,13 +101,13 @@
                 {{ form.repassword }}
               </div>
               <ul class="mb-3">
-                <li class="ultrasmall text-muted">Introduzca la misma contraseña nuevamente, para poder verificar la misma.</li>
+                <li class="small text-muted">Introduzca la misma contraseña nuevamente, para poder verificar la misma.</li>
               </ul>
               
               <div class="mb-3 d-flex justify-content-between">
                 <div class="form-check">
                   <input class="form-check-input" required type="checkbox" value="" id="flexCheckDefault">
-                  <label class="form-check-label small text-muted" for="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
                     Acepto los <a href="#!" class="fw-semibold link-decoration">Terminos y condiciones</a>
                   </label>
                 </div>
@@ -130,3 +130,6 @@
   </div>
 </section>
 {% endblock content %}
+{% block js %}
+
+{% endblock js %}

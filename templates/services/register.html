@@ -8,9 +8,72 @@
 <link rel="stylesheet" href="{% static 'vendor/node_modules/css/choices.min.css' %}">
 <!--Form steps css-->
 <link rel="stylesheet" href="{% static 'vendor/node_modules/css/bs-stepper.min.css' %}">
-<!-- MapBox -->
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css'>
 {% endblock stylesheet %}
+
+{% block css %}
+<style>
+  .card-membership .form-check-input:checked {
+    border-color: white;
+  }
+  .filepond--drop-label {
+    color: #4c4e53;
+  }
+  .filepond--panel-root {
+    background-color: #edf0f4;
+  }
+  .filepond--root {
+    width: 170px;
+    cursor: pointer;
+  }
+  .filepond--root * {
+    cursor: pointer !important;
+  }
+  .filepond--credits {
+    display: none;
+  }
+  #logo-preview {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--bs-primary);
+    cursor: pointer;
+    position: relative;
+  }
+  #logo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  #logo-preview i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  #portada-preview {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border: 1px dashed var(--bs-primary);
+    cursor: pointer;
+    position: relative;
+  }
+  #portada-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  #portada-preview i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>  
+{% endblock css %}
 
 {% block navbar %}
 {% include 'partials/navbar-dark-fixed.html' %}
@@ -151,65 +214,47 @@
               <div class="d-flex flex-column h-100">
                 <!--Step Title-->
                 <div class="flex-shrink-0 border-bottom">
-                  <h6 class="mb-1">Membresia</h6>
-                  <p class="text-muted small mb-0">Selecciona el tipo de membresia y plan de pago</p>
+                  <h3 class="mb-1">Membresia</h3>
+                  <p class="text-muted small mb-0">Selecciona plan de pago y el tipo de membresia</p>
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
-                  <p>Membresia</p>
+                  <p>Plan<sup><i class="bx bx-health ms-1 text-danger"></i></sup></p>
                   <div class="mb-3">
-                    {% for choice in form.plan %}
-                    {{ choice.choice_label }}
-                    <span class="radio">{{ choice.tag }}</span>
+                    {% for cuota in form.cuota %}
+                    <div class="form-check form-check-inline">
+                      {{ cuota.tag }}
+                      <label class="form-check-label">{{ cuota.choice_label }}</label>
+                    </div>
                     {% endfor %}
-                    <!-- <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                      <label class="form-check-label" for="inlineRadio1">1</label>
-                    </div> -->
-                  </div>
-                  <div class="mb-3">
-                    <label for="" class="form-label">Plan</label>
-                    {{form.cuota}}
                   </div>
                   
-                  <!--Pricing container-->
-                  <div class="container">
-                    <!--Pricing row-->
-                    <div class="no-gutters row">
-                      <!--Pricing col-->
+                  <p>Membresia<sup><i class="bx bx-health ms-1 text-danger"></i></sup></p>
+                  <div class="mb-3">
+                    <div class="row no-gutters">
+                      {% for plan in form.plan %}
                       <div class="col-lg-6">
-                        <!--Pricing Card-->
-                        <div class="card py-5 h-100 border card-body">
-                          <div class="rounded-top mb-4 position-relative overflow-hidden text-center">
-                            <h5 class="title mb-4">Básico</h5>
+                        <div class="card-membership card py-5 h-100 border card-body position-relative bg-primary-light" style="cursor:pointer;">
+                          <div class="rounded-top mb-4 overflow-hidden text-center">
+                            <h5 class="title mb-4">{{ plan.choice_label }}</h5>
+                            <span class="radio position-absolute top-0 end-0" style="transform: translate(-1rem, 1rem);">{{ plan.tag }}</span>
                             <div>
-                              <h2 class="display-4 mb-2 lh-1"><sub class="small">$</sub>{{ plan_basic.price }}</h2>
+                              {% for mb in membership %}
+                                {% if plan.choice_label == mb.name %}
+                                  <h2 class="display-4 mb-2 lh-1">
+                                    <sub class="small">$</sub>
+                                    <span id="span-{{ mb.name }}">{{ mb.price }}</span>
+                                  </h2>
+                                {% endif %}
+                              {% endfor %}
                             </div>
                           </div>
-                          <ul class="text-center list-unstyled mb-4">
-                            <li class="mb-2 text-muted">Beneficios</li>
-                          </ul>
+                          <!-- <ul class="text-center list-unstyled mb-4">
+                            <li class="mb-2">Beneficios</li>
+                          </ul> -->
                         </div>
                       </div>
-                      
-                      <!--Pricing col-->
-                      <div class="col-lg-6">
-                        <!--Pricing Card-->
-                        <div class="card pt-6 pb-5 h-100 border-0 shadow-lg bg-shade-primary text-white card-body position-relative z-index-1">
-                          <div class="rounded-top mb-4 position-relative overflow-hidden text-center">
-                            <h5 class="title mb-4">Premium</h5>
-                            <div>
-                              <h2 class="display-4 mb-2 lh-1"><sub class="small">$</sub>1.999</h2>
-                            </div>
-                            <!--/.price-->
-                          </div>
-                          <!--/.price-card-header-->
-                          <ul class="text-center list-unstyled mb-4">
-                            <li class="mb-2 text-muted">Beneficios</li>
-                          </ul>
-                        </div>
-                      </div>
-                      
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
@@ -231,9 +276,18 @@
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
-                  {{form.title}}
-                  {{form.company}}
-                  {{form.description}}
+                  <div class="mb-3">
+                    <label for="{{ form.title.id_for_label }}"><strong>{{ form.title.label }}</strong><sup><i class="bx bx-health ms-1 text-danger"></i></sup></label>
+                    {{form.title}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.company.id_for_label }}"><strong>{{ form.company.label }}</strong></label>
+                    {{form.company}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.description.id_for_label }}"><strong>{{ form.description.label }}</strong><sup><i class="bx bx-health ms-1 text-danger"></i></sup></label>
+                    {{form.description}}
+                  </div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -256,8 +310,28 @@
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
-                  {{form.logo}}
-                  {{form.image}}
+                  <div class="mb-3">
+                    <label for="{{ form.logo.id_for_logo }}">{{ form.logo.label }}</label>
+                    <div class="d-flex align-items-end">
+                      {{form.logo}}
+                      <div id="logo-preview" class="d-flex align-items-center justify-content-center flex-column">
+                        <i class="bx bxs-image-add bx-md text-primary"></i>
+                      </div>
+                      <button type="button" id="reset-logo" class="btn btn-link d-none"><i class="bx bxs-trash bx-sm"></i></button>
+                    </div>
+                    <p class="small text-muted"><sup><i class="bx bx-health me-1 text-info"></i></sup>Para un mejor resultado use una imagen de aspecto 1:1 (Cuadrada)</p>
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.image.id_for_image }}">Imagen de portada</label>
+                    <div class="d-flex align-items-end">
+                      {{form.image}}
+                      <div id="portada-preview" class="d-flex align-items-center justify-content-center flex-column">
+                        <i class="bx bxs-image-add bx-md text-primary"></i>
+                      </div>
+                      <button type="button" id="reset-portada" class="btn btn-link d-none"><i class="bx bxs-trash bx-sm"></i></button>
+                    </div>
+                    <p class="small mt-3 text-muted"><sup><i class="bx bx-health me-1 text-info"></i></sup>Para un mejor resultado use una imagen de aspecto 16:9 (Horizontal)</p>
+                  </div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -279,11 +353,26 @@
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
-                  {{form.email}}
-                  {{form.phone1}}
-                  {{form.phone2}}
-                  {{form.whatsapp}}
-                  {{form.web}}
+                  <div class="mb-3">
+                    <label for="{{ form.email.id_for_email }}">{{ form.email.label }}</label>
+                    {{form.email}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.phone1.id_for_phone1 }}">{{ form.phone1.label }}<sup><i class="bx bx-health ms-1 text-danger"></i></sup></label>
+                    {{form.phone1}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.phone2.id_for_phone2 }}">{{ form.phone2.label }}</label>
+                    {{form.phone2}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.whatsapp.id_for_whatsapp }}">{{ form.whatsapp.label }}</label>
+                    {{form.whatsapp}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="{{ form.web.id_for_web }}">{{ form.web.label }}</label>
+                    {{form.web}}
+                  </div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -305,7 +394,76 @@
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
-                  {{form.office_hours}}
+                  <label class="form-check-label me-3">Lunes</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_lunes.id_for_label }}" name="{{ form.at_lunes.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_lunes.id_for_label }}" name="{{ form.op_lunes.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_lunes.id_for_label }}" name="{{ form.cl_lunes.html_name }}" class="form-control">
+                  </div>
+                  <label class="form-check-label me-3">Martes</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_martes.id_for_label }}" name="{{ form.at_martes.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_martes.id_for_label }}" name="{{ form.op_martes.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_martes.id_for_label }}" name="{{ form.cl_martes.html_name }}" class="form-control">
+                  </div>
+                  <label class="form-check-label me-3">Miercoles</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_miercoles.id_for_label }}" name="{{ form.at_miercoles.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_miercoles.id_for_label }}" name="{{ form.op_miercoles.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_miercoles.id_for_label }}" name="{{ form.cl_miercoles.html_name }}" class="form-control">
+                  </div>
+                  <label class="form-check-label me-3">Jueves</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_jueves.id_for_label }}" name="{{ form.at_jueves.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_jueves.id_for_label }}" name="{{ form.op_jueves.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_jueves.id_for_label }}" name="{{ form.cl_jueves.html_name }}" class="form-control">
+                  </div>
+                  <label class="form-check-label me-3">Viernes</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_viernes.id_for_label }}" name="{{ form.at_viernes.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_viernes.id_for_label }}" name="{{ form.op_viernes.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_viernes.id_for_label }}" name="{{ form.cl_viernes.html_name }}" class="form-control">
+                  </div>
+                  <label class="form-check-label me-3">Sabado</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_sabado.id_for_label }}" name="{{ form.at_sabado.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_sabado.id_for_label }}" name="{{ form.op_sabado.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_sabado.id_for_label }}" name="{{ form.cl_sabado.html_name }}" class="form-control">
+                  </div>
+                  <label class="form-check-label me-3">Domingo</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-text">
+                      <input type="checkbox" id="{{ form.at_domingo.id_for_label }}" name="{{ form.at_domingo.html_name }}" class="form-check-input">
+                    </div>
+                    <div class="input-group-text d-none d-md-block">Horario</div>
+                    <input type="time" id="{{ form.op_domingo.id_for_label }}" name="{{ form.op_domingo.html_name }}" class="form-control">
+                    <div class="input-group-text">a</div>
+                    <input type="time" id="{{ form.cl_domingo.id_for_label }}" name="{{ form.cl_domingo.html_name }}" class="form-control">
+                  </div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -327,9 +485,20 @@
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
-                  {{form.address}}
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d986.3705932963069!2d-71.24874017087913!3d8.549526325818272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x52652fa23fdf11a1!2zOMKwMzInNTguMyJOIDcxwrAxNCc1My41Ilc!5e0!3m2!1ses!2sve!4v1668836061352!5m2!1ses!2sve" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                  <!-- <div id='map' style='width: 100%; height: 300px;'></div> -->
+                  <div class="mb-3">
+                    <label for="{{ form.address.id_for_web }}">{{ form.address.label }}</label>
+                    {{form.address}}
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Latitud</span>
+                    {{form.lat}}
+                    <span class="input-group-text" id="basic-addon1">Longitud</span>
+                    {{form.lng}}
+                    <button class="btn btn-outline-primary" type="button" id="current-location">
+                      <i class="bx bx-current-location bx-sm"></i>
+                    </button>
+                  </div>
+                  <div id="mapa" class="w-100" style="height: 200px;"></div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -352,13 +521,19 @@
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
                   {{ social_formset.management_form }}
-                  {% for form_social in social_formset %}
-                  <div class="input-group">
-                    {{ form_social.name }}
-                    {{ form_social.url }}
-                    {{ form_social.DELETE }}
+                  <div id="content-redes">
+                    {% for form_social in social_formset %}
+                    <div class="add-social input-group">
+                      {{ form_social.name }}
+                      {{ form_social.url }}
+                    </div>
+                    {% endfor %}
                   </div>
-                  {% endfor %}
+                  <div class="mt-2 text-end">
+                    <button type="button" class="btn btn-outline-primary btn-sm p-2" onclick="addSocial()">
+                      <i class="bx bx-plus bx-xs"></i> Agregar Red Social
+                    </button>
+                  </div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -381,10 +556,18 @@
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
                   {{ paymethod_formset.management_form }}
-                  {% for form_paymethod in paymethod_formset %}
-                  {{ form_paymethod.paymethod }}
-                  {{ form_paymethod.DELETE }}
-                  {% endfor %}
+                  <div id="content-paymethod">
+                    {% for form_paymethod in paymethod_formset %}
+                    <div class="add-paymethod">
+                      {{ form_paymethod.paymethod }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <div class="mt-2 text-end">
+                    <button type="button" class="btn btn-outline-primary btn-sm p-2" onclick="addPaymethod()">
+                      <i class="bx bx-plus bx-xs"></i> Agregar Metodo de Pago
+                    </button>
+                  </div>
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -407,7 +590,12 @@
                 </div>
                 <!--Step main content-->
                 <div class="flex-grow-1 py-3">
+                  <label for="">Categoria</label>
                   {{form.category}}
+                </div>
+                <div class="flex-grow-1 py-3">
+                  <label for="">Subcategoria(s)</label>
+                  {{form.subcategory}}
                 </div>
                 <!--Step footer-->
                 <div class="d-flex pt-3 border-top justify-content-between">
@@ -427,99 +615,44 @@
     <!--Steps vertical end-->
   </div>
 </section>
-
-
-
-<!-- <section class="position-relative">
-  <div class="container pt-11 pt-lg-14 pb-9 pb-lg-11 position-relative z-index-1">
-    <div class="row align-items-center justify-content-center">
-      <div class="col-12 z-index-2">
-        <h2 class="mb-1 display-6">
-          Crear Servicio
-        </h2>
-        <div class="position-relative">
-          <div>
-            <form method="POST">
-              {% csrf_token %}
-              {% if form.non_field_errors %}
-              {% for error in form.non_field_errors %}
-              <div class="alert alert-danger my-3 py-2" role="alert">
-                {{ error|escape }}
-              </div>
-              {% endfor %}
-              {% endif %}
-              
-              {{ form }}
-              
-              {{ social_formset.management_form }}
-              {% for form_social in social_formset %}
-              {{ form_social.name }}
-              {{ form_social.url }}
-              {% endfor %}
-              
-              <div class="d-grid">
-                <button class="btn btn-secondary btn-sm" type="submit">
-                  Crear Servicio
-                </button>
-              </div>
-            </form>
-            
-            <p class="pt-3 small text-muted text-center">
-              <a href="{% url 'users_app:user-dashboard' %}" class="text-dark fw-semibold link-decoration">Cancelar</a>
-            </p>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
 {% endblock content %}
 
 {% block js %}
-<!--Form steps script-->
 <script src="{% static 'vendor/node_modules/js/bs-stepper.min.js' %}"></script>
-<script>
-  var stepDemoVertical = new Stepper(document.querySelector('#stepperDemoVertical'), {
-    linear: false,
-    animation: true,
-  });
-  stepDemoVertical.next();
-  stepDemoVertical.previous()
-  
-</script>
 <script src="{% static 'vendor/node_modules/js/choices.min.js' %}"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
+<script src="{% static 'js/register-services.js' %}"></script>
 <script>
-  var cSelect = document.querySelectorAll("[data-choices]");
-  cSelect.forEach(el => {
-    const t = { ...el.dataset.choices ? JSON.parse(el.dataset.choices) : {},
-    ...{
-      classNames: {
-        containerInner: el.className,
-        input: "form-control",
-        inputCloned: "form-control-sm",
-        listDropdown: "dropdown-menu",
-        itemChoice: "dropdown-item",
-        activeState: "show",
-        selectedState: "active"
+  var optPlan
+  $('.plan').on('change', function() {
+    $('.plan').each(function() {
+      if ($(this).is(':checked')) {
+        optPlan = $(this).siblings('label').text()
       }
-    }
-  }
-  new Choices(el, t)
-});
-</script>
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js'></script>
-<script>
-  // TO MAKE THE MAP APPEAR YOU MUST
-  // ADD YOUR ACCESS TOKEN FROM
-  // https://account.mapbox.com
-  mapboxgl.accessToken = '<your access token here>';
-    const map = new mapboxgl.Map({
-      container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/streets-v12', // style URL
-      center: [-74.5, 40], // starting position [lng, lat]
-      zoom: 9, // starting zoom
-    });
-  </script>
-  {% endblock js %}
+    })
+    calcPlan(optPlan)
+  })
+  function calcPlan(optPlan) {
+    {% for p in porcents %}
+      if ('{{ p.time }}' == optPlan) {
+        var porcent_{{ p.time }} = '{{ p.discount_rate }}'
+        porcent_{{ p.time }} = parseFloat(porcent_{{ p.time }}.replace(/,/g, "."))
+        var porcent = porcent_{{ p.time }}
+      }
+    {% endfor %}
   
+    {% for plan in form.plan %}
+      {% for mb in membership %}
+        {% if plan.choice_label == mb.name %}
+          var price_{{ mb.name }} = '{{ mb.price }}'
+          price_{{ mb.name }} = parseFloat(price_{{ mb.name }}.replace(/,/g, "."))
+          var calcPrice_{{ mb.name }} = price_{{ mb.name }} - ((price_{{ mb.name }} * porcent) / 100).toFixed(2)
+          // calcPrice_{{ mb.name }} = calcPrice_{{ mb.name }}.toString()
+          // calcPrice_{{ mb.name }} = calcPrice_{{ mb.name }}.replace(/./g, ",")
+          $('#span-{{ mb.name }}').text(calcPrice_{{ mb.name }})
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  }
+</script>
+{% endblock js %}

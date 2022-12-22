@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}Registro{% endblock title %}
+{% block title %}Servicio{% endblock title %}
 
 {% block navbar %}
   {% include 'partials/navbar-transparent.html' %}
@@ -9,7 +9,27 @@
 
 {% block css %}
 <style>
-
+  .logo-service {
+    width: 8rem;
+    height: 8rem;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: white;
+    background-image: url('{{ service.logo.url }}');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+  .border-double {
+    border-width: 2px;
+    border-style: outset;
+    border-radius: 0.5rem;
+    border-color: rgba(var(--bs-primary-rgb), 0.3);
+  }
 </style>
 {% endblock css %}
 
@@ -25,38 +45,87 @@
   </div>
 </section>
 
-<div class="container">
+<div class="container position-relative">
   <div class="row pt-3">
     <div class="col-12">
-      <h1 class="text-center"><strong>{{ service.title }}</strong></h1>
+      <div class="logo-service shadow"></div>
+      <!-- <h1 class="text-center mt-9"><strong>{{ service.title }}</strong></h1> -->
     </div>
   </div>
-  <div class="row">
+  <div class="row mt-9">
     <div class="col-12 col-lg-6 py-3">
-      <div class="p-3 shadow-lg">
-        <h5 class="mb-3"><strong>Información</strong></h5>
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><strong><i class="bx bx-info-circle bx-sm"></i> Información</strong></h5>
         {% if service.company  %}
-        <p><strong>Empresa: </strong>{{ service.company }}</p>
+        <p class="fw-light mb-1"><strong>Empresa: </strong>{{ service.company }}</p>
         {% endif %}
         {% if service.description  %}
-        <p><strong>Descripción: </strong>{{ service.description }}</p>
+        <p class="fw-light mb-1"><strong>Descripción: </strong>{{ service.description }}</p>
         {% endif %}
       </div>
       {% if service.plan|stringformat:"s" == "Premium" %}
-      <div class="p-3 shadow-lg">
-        <h5 class="mb-3"><strong>Horario de Atención</strong></h5>
-        {% if service.office_hours  %}
-        <p>{{ service.office_hours|linebreaks }}</p>
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><i class="bx bx-time bx-sm"></i> <strong>Horario de Atención</strong></h5>
+        {% if service.at_lunes  %}
+        <p class="fw-light mb-0"><strong>Lunes:</strong> {{ service.op_lunes }} a {{ service.cl_lunes }}</p>
         {% endif %}
+        {% if service.at_martes  %}
+        <p class="fw-light mb-0"><strong>Martes:</strong> {{ service.op_martes }} a {{ service.cl_martes }}</p>
+        {% endif %}
+        {% if service.at_miercoles  %}
+        <p class="fw-light mb-0"><strong>Miercoles:</strong> {{ service.op_miercoles }} a {{ service.cl_miercoles }}</p>
+        {% endif %}
+        {% if service.at_jueves  %}
+        <p class="fw-light mb-0"><strong>Jueves:</strong> {{ service.op_jueves }} a {{ service.cl_jueves }}</p>
+        {% endif %}
+        {% if service.at_viernes  %}
+        <p class="fw-light mb-0"><strong>Viernes:</strong> {{ service.op_viernes }} a {{ service.cl_viernes }}</p>
+        {% endif %}
+        {% if service.at_sabado  %}
+        <p class="fw-light mb-0"><strong>Sabado:</strong> {{ service.op_sabado }} a {{ service.cl_sabado }}</p>
+        {% endif %}
+        {% if service.at_domingo  %}
+        <p class="fw-light mb-0"><strong>Domingo:</strong> {{ service.op_domingo }} a {{ service.cl_domingo }}</p>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if service.plan|stringformat:"s" == "Premium" %}
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><i class="bx bx-map bx-sm"></i> <strong>Ubicación</strong></h5>
+        <p class="mb-2">{{ service.address }}</p>
+        <div id="mapa" class="w-100" style="height: 200px;"></div>
       </div>
       {% endif %}
     </div>
     <div class="col-12 col-lg-6 py-3">
       
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><i class="bx bxs-contact bx-sm"></i> <strong>Contacto</strong></h5>
+        {% if service.plan|stringformat:"s" == "Premium" %}
+        {% if service.email  %}
+        <p class="mb-1 fw-light"><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
+        {% endif %}
+        {% endif %}
+        {% if service.phone1  %}
+        <p class="mb-1 fw-light"><strong>Teléfono: </strong><a href="tel:+{{ service.phone1 }}">{{ service.phone1 }}</a></p>
+        {% endif %}
+        {% if service.plan|stringformat:"s" == "Premium" %}
+        {% if service.phone2  %}
+        <p class="mb-1 fw-light"><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
+        {% endif %}
+        {% if service.whatsapp  %}
+        <p class="mb-1 fw-light"><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
+        {% endif %}
+        {% if service.web  %}
+        <p class="mb-1 fw-light"><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
+        {% endif %}
+        {% endif %}
+      </div>
+      
       {% if service.plan|stringformat:"s" == "Premium" %}
       {% if redes %}
-      <div class="p-3 shadow-lg">
-        <h5 class="mb-3"><strong>Redes Sociales</strong></h5>
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><i class="bx bx-mobile bx-sm"></i> <strong>Redes Sociales</strong></h5>
         {% for rrss in redes %}
         <a href="{{ rrss.url }}" target="_blank" rel="noopener noreferrer">{{ rrss.name }}</a>
         {% endfor %}
@@ -66,38 +135,54 @@
       
       {% if service.plan|stringformat:"s" == "Premium" %}
       {% if payMethods %}
-      <div class="p-3 shadow-lg">
-        <h5 class="mb-3"><strong>Metodos de Pago</strong></h5>  
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><i class="bx bx-credit-card bx-sm"></i> <strong>Metodos de Pago</strong></h5>  
         {% for pm in payMethods %}
         <p class="mb-0">{{ pm.paymethod }}</p>
         {% endfor %}
       </div>
       {% endif %}
       {% endif %}
-      
-      <div class="p-3 shadow-lg">
-        <h5 class="mb-3"><strong>Contacto</strong></h5>
-        {% if service.plan|stringformat:"s" == "Premium" %}
-        {% if service.email  %}
-        <p><strong>Email: </strong><a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
-        {% endif %}
-        {% endif %}
-        {% if service.phone1  %}
-        <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone1 }}">{{ service.phone1 }}</a></p>
-        {% endif %}
-        {% if service.plan|stringformat:"s" == "Premium" %}
-        {% if service.phone2  %}
-        <p><strong>Teléfono: </strong><a href="tel:+{{ service.phone2 }}">{{ service.phone2 }}</a></p>
-        {% endif %}
-        {% if service.whatsapp  %}
-        <p><strong>Whatsapp: </strong><a href="http://wa.me/{{ service.whatsapp }}" target="_blank">{{ service.whatsapp }}</a></p>
-        {% endif %}
-        {% if service.web  %}
-        <p><strong>Web: </strong><a href="{{ service.web }}" target="_blank">{{ service.web }}</a></p>
-        {% endif %}
+
+      {% if service.plan|stringformat:"s" == "Premium" %}
+      <div class="p-3 shadow-lg mt-3 border-double">
+        <h5 class="mb-2 text-primary"><i class="bx bx-category bx-sm"></i> <strong>Categoria</strong></h5>
+        <p class="mb-2"><a class="mb-2" href="#">{{ service.category }}</a></p>
+        <p class="mb-2"><strong>Subcategoria(s)</strong></p>
+        {% if service.subcategory  %}
+          {% for subcategory in service.subcategory.all %}
+          <a class="me-3" href="#">{{ subcategory.name }}</a>
+          {% endfor %}
         {% endif %}
       </div>
+      {% endif %}
     </div>
   </div>
 </div>
 {% endblock content %}
+
+{% block js %}
+  <script async src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
+  <script>
+    function initMap() {
+      var latitud = {{ service.lat }}
+      var longitud = {{ service.lng }}
+      coord = {
+        lng: longitud,
+        lat: latitud
+      }
+      generarMapa(coord)
+    }
+    function generarMapa(coord) {
+      var mapa = new google.maps.Map(document.getElementById("mapa"), {
+        zoom: 15,
+        center: new google.maps.LatLng(coord.lat, coord.lng)
+      })
+      marcador = new google.maps.Marker({
+        map: mapa,
+        position: new google.maps.LatLng(coord.lat, coord.lng)
+      })
+    }
+  </script>
+{% endblock js %}
+  

@@ -5,7 +5,7 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     
     path('', include('apps.home.urls')),
     path('', include('apps.users.urls')),

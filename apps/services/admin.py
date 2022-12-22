@@ -1,13 +1,20 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Category, Service, SocialNetwork, PaymentMethods
+from .models import Category, SubCategory, Service, SocialNetwork, PaymentMethods
 
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     ordering = ('name', )
+
+
+class SubCategoryAdmin(admin.ModelAdmin):
+    list_display = ('category', 'name',)
+    search_fields = ('name',)
+    ordering = ('category', 'name', )
+    list_filter = ('category',)
 
 
 class SocialNetworkAdmin(admin.TabularInline):
@@ -34,7 +41,7 @@ def make_paused(modeladmin, request, queryset):
 
 class ServiceAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ('status', 'user', 'category', 'title', 'company', 'plan', 'cuota',)}),
+        (None, {'fields': ('status', 'user', 'category', 'subcategory', 'title', 'company', 'plan', 'cuota',)}),
         (('INFORMACION'), {
             'fields': (
                 'logo',
@@ -45,6 +52,8 @@ class ServiceAdmin(admin.ModelAdmin):
         (('UBICACIÓN'), {
             'fields': (
                 'address',
+                'lat',
+                'lng',
             )
         }),
         (('CONTACTO'), {
@@ -58,7 +67,13 @@ class ServiceAdmin(admin.ModelAdmin):
         }),
         (('HORARIO DE ATENCIÓN'), {
             'fields': (
-                'office_hours',
+                'at_lunes', 'op_lunes', 'cl_lunes',
+                'at_martes', 'op_martes', 'cl_martes',
+                'at_miercoles', 'op_miercoles', 'cl_miercoles',
+                'at_jueves', 'op_jueves', 'cl_jueves',
+                'at_viernes', 'op_viernes', 'cl_viernes',
+                'at_sabado', 'op_sabado', 'cl_sabado',
+                'at_domingo', 'op_domingo', 'cl_domingo',
             )
         }),
         (('FECHAS IMPORTANTES'), {
@@ -71,12 +86,12 @@ class ServiceAdmin(admin.ModelAdmin):
 
     inlines = (SocialNetworkAdmin, PaymentMethodsAdmin)
     list_display = ('id', 'title', 'category', 'user', 'status',)
-    search_fields = ('category', 'title',)
-    list_filter = ('status', 'category',)
+    search_fields = ('category', 'subcategory', 'title',)
+    list_filter = ('status', 'category', 'subcategory',)
     ordering = ('date_create',)
     readonly_fields = ('date_mod', 'date_create',)
     actions = [make_active, make_inactive, make_paused]
 
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Service, ServiceAdmin)
-admin.site.register(SocialNetwork)

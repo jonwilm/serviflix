@@ -10,15 +10,29 @@ class RegisterServiceForm(forms.ModelForm):
     class Meta:
         model = Service
         fields = [
-            'category', 'title', 'company', 'plan', 'cuota',
+            'category', 'subcategory', 'title', 'company', 'plan', 'cuota',
             'logo', 'image', 'description',
-            'address', 'email', 'phone1', 'phone2', 'whatsapp', 'web', 'office_hours',
+            'address', 'lat', 'lng',
+            'email', 'phone1', 'phone2', 'whatsapp', 'web',
+            'at_lunes', 'op_lunes', 'cl_lunes',
+            'at_martes', 'op_martes', 'cl_martes',
+            'at_miercoles', 'op_miercoles', 'cl_miercoles',
+            'at_jueves', 'op_jueves', 'cl_jueves',
+            'at_viernes', 'op_viernes', 'cl_viernes',
+            'at_sabado', 'op_sabado', 'cl_sabado',
+            'at_domingo', 'op_domingo', 'cl_domingo',
         ]
         widgets = {
             'category': forms.Select(
                 attrs={
                     'class': 'form-control',
                     'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                }
+            ),
+            'subcategory': forms.SelectMultiple(
+                attrs={
+                    'class': 'form-select',
+                    'data-choices': '{"silent": true,"removeItems": "true","removeItemButton": "true", "allowHTML":true}',
                 }
             ),
             'title': forms.TextInput(
@@ -36,23 +50,24 @@ class RegisterServiceForm(forms.ModelForm):
             'plan': forms.RadioSelect(
                 attrs={
                     'class': 'form-check-input',
-                    # 'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
-            'cuota': forms.Select(
+            'cuota': forms.RadioSelect(
                 attrs={
-                    'class': 'form-select',
-                    # 'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                    'class': 'form-check-input plan',
+                    # 'data-choices': '{"searchEnabled":false, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
             'logo': forms.FileInput(
                 attrs={
-                    'class': 'form-control',
+                    'class': 'form-control w-0 h-0 p-0',
+                    'onchange': 'logoPreview(this)',
                 }
             ),
             'image': forms.FileInput(
                 attrs={
-                    'class': 'form-control',
+                    'class': 'form-control w-0 h-0 p-0',
+                    'onchange': 'portadaPreview(this)',
                 }
             ),
             'description': forms.Textarea(
@@ -63,12 +78,20 @@ class RegisterServiceForm(forms.ModelForm):
                     'style': 'resize: none;'
                 }
             ),
-            'address': forms.Textarea(
+            'address': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'placeholder': 'Dirección',
-                    'rows': '2',
-                    'style': 'resize: none;'
+                }
+            ),
+            'lat': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'lng': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
                 }
             ),
             'email': forms.EmailInput(
@@ -101,15 +124,12 @@ class RegisterServiceForm(forms.ModelForm):
                     'placeholder': 'Pagina Web'
                 }
             ),
-            'office_hours': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Horario de Atención',
-                    'rows': '2',
-                    'style': 'resize: none;'
-                }
-            ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].empty_label = 'Seleccione...'
+        self.fields['subcategory'].empty_label = ''
 
 
 class UpdateServiceForm(forms.ModelForm):
@@ -118,7 +138,7 @@ class UpdateServiceForm(forms.ModelForm):
         fields = [
             'category', 'title', 'company', 'plan', 'cuota',
             'logo', 'image', 'description',
-            'address', 'email', 'phone1', 'phone2', 'whatsapp', 'web', 'office_hours',
+            'address', 'email', 'phone1', 'phone2', 'whatsapp', 'web',
         ]
         widgets = {
             'category': forms.Select(
@@ -207,14 +227,6 @@ class UpdateServiceForm(forms.ModelForm):
                     'placeholder': 'Pagina Web'
                 }
             ),
-            'office_hours': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Horario de Atención',
-                    'rows': '2',
-                    'style': 'resize: none;'
-                }
-            ),
         }
 
 
@@ -226,8 +238,9 @@ class SocialServiceForm(forms.ModelForm):
         widgets = {
             'name': forms.Select(
                 attrs={
-                    'class': 'form-control',
-                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                    'class': 'form-select',
+                    # 'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                    'style': 'max-width: fit-content;'
                 }
             ),
             'url': forms.TextInput(
@@ -239,11 +252,11 @@ class SocialServiceForm(forms.ModelForm):
         }
 
 
-SocialServiceFormSet = modelformset_factory(
+SocialServiceFormSet = inlineformset_factory(
+    Service,
     SocialNetwork,
     form=SocialServiceForm,
-    extra=0,
-    can_delete=True,
+    extra=1,
 )
 
 
@@ -255,16 +268,16 @@ class PaymentMethodsServicesForm(forms.ModelForm):
         widgets = {
             'paymethod': forms.Select(
                 attrs={
-                    'class': 'form-control',
-                    'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
+                    'class': 'form-select',
+                    # 'data-choices': '{"searchEnabled":true, "allowHTML":true,"itemSelectText":""}',
                 }
             ),
         }
 
 
-PaymentMethodsServicesFormSet = modelformset_factory(
+PaymentMethodsServicesFormSet = inlineformset_factory(
+    Service,
     PaymentMethods,
     form=PaymentMethodsServicesForm,
-    extra=0,
-    can_delete=True,
+    extra=1,
 )

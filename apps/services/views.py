@@ -1,9 +1,9 @@
 # Django
 from django.urls import reverse_lazy, reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import PaymentMethods, Service, SocialNetwork, Category
 from .forms import RegisterServiceForm, UpdateServiceForm, SocialServiceFormSet, PaymentMethodsServicesFormSet
@@ -41,8 +41,8 @@ class RegisterService(LoginRequiredMixin, CreateView):
             context['paymethod_formset'] = PaymentMethodsServicesFormSet(
                 queryset=PaymentMethods.objects.none(),
             )
-        context['plan_basic'] = Plan.objects.filter(name='Básico')
-        context['plan_premium'] = Plan.objects.filter(name='Premium')
+        context['porcents'] = TimeDiscount.objects.all()
+        context['membership'] = Plan.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -164,3 +164,22 @@ class DetailService(DetailView):
         }
         return context
     
+
+class DeleteService(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Service
+    template_name = 'services/service_confirm_delete.html'
+    success_url = reverse_lazy('users_app:user-dashboard')
+
+    def test_func(self):
+        user = self.get_object().user
+        print(self.request.user)
+        if self.request.user == user:
+            return True
+        return False
+
+    def handle_no_permission(self):
+        return HttpResponseRedirect(
+            reverse(
+                'users_app:user-dashboard'
+            )
+        )

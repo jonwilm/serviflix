@@ -16,6 +16,7 @@
 
 /* Global */
 body {
+  font-family: 'Poppins';
   background-color: #EDF1F9;
 }
 .ultrasmall {
@@ -35,6 +36,9 @@ body {
 }
 .bg-dark-blue {
   background-color: rgb(10, 20, 50) !important;
+}
+.bg-primary-light {
+  background-color: rgba(var(--bs-primary-rgb), 0.3) !important;
 }
 .min-w-max {
   min-width: max-content !important;

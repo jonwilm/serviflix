@@ -80,12 +80,14 @@
                 </svg>
               </div>
               <!--Content-body-->
-              <div class="card-body position-relative">
-                <div class="width-7x height-7x mx-auto rounded-circle shadow bg-no-repat overflow-hidden bg-cover bg-center" style="background-image: url('{{ service.logo.url }}'); margin-top: -3.5rem;"></div>
-                <h5 class="pb-3 mb-0 text-primary"><strong>{{ service.title }}</strong></h5>
-                <p class="mb-0 text-start text-truncate">
-                  {{ service.description }}
-                </p>
+              <div class="card-body position-relative d-flex flex-column justify-content-between">
+                <div>
+                  <div class="width-7x height-7x mx-auto rounded-circle shadow bg-no-repat overflow-hidden bg-cover bg-center" style="background-image: url('{{ service.logo.url }}'); margin-top: -3.5rem;"></div>
+                  <h5 class="pb-3 mb-0 text-primary"><strong>{{ service.title }}</strong></h5>
+                  <p class="mb-0 text-start text-truncate">
+                    {{ service.description }}
+                  </p>
+                </div>
                 <p class="mt-3 mb-0 text-end"><small><i class="bx bxs-category-alt mb-1 text-primary"></i>{{ service.category }}</small></p>
               </div>
               <!--Article link-->

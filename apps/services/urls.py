@@ -25,5 +25,11 @@ urlpatterns = [
     path(
         'servicios/<slug:slug>',
         views.DetailService.as_view(),
-        name="service-detail"),
+        name="service-detail",
+    ),
+    path(
+        'servicios/eliminar/<pk>/',
+        views.DeleteService.as_view(),
+        name='service-delete',
+    ),
 ]
